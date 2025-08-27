@@ -8,8 +8,9 @@ gcc test_vector.c -I ../include -I ../include/error -I ../include/vector -I ../i
 
 gcc test_vector_fill.c -I ../include -I ../include/error -I ../include/vector  -I ../include/matrix  -L ../lib -lsss -o test_vector_fill.out
 
-// fit()
-gcc linear_regression.c  -I ../include -I ../include/error -I ../include/vector -I ../include/matrix -I ../private/include -I ../private/include/error -I ../include/math -I ../include/ml_math -L ../lib -lsss -o linear_regression.out -Wall
+REM this is a comment
+REM  fit()
+REM gcc linear_regression.c  -I ../include -I ../include/error -I ../include/vector -I ../include/matrix -I ../private/include -I ../private/include/error -I ../include/math -I ../include/ml_math -L ../lib -lsss -o linear_regression.out -Wall
 
-// predict()
-gcc linear_regression_predict.c  -I ../include -I ../include/error -I ../include/vector -I ../include/matrix -I ../private/include -I ../private/include/error -I ../include/math -I ../include/ml_math -L ../lib -lsss -o linear_regression_predict.out -Wall
+REM  predict()
+REM gcc linear_regression_predict.c  -I ../include -I ../include/error -I ../include/vector -I ../include/matrix -I ../private/include -I ../private/include/error -I ../include/math -I ../include/ml_math -L ../lib -lsss -o linear_regression_predict.out -Wall
