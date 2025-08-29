@@ -17,3 +17,4 @@ REM gcc linear_regression.c  -I ../include -I ../include/error -I ../include/vec
 REM  predict()
 REM gcc linear_regression_predict.c  -I ../include -I ../include/error -I ../include/vector -I ../include/matrix -I ../private/include -I ../private/include/error -I ../include/math -I ../include/ml_math -L ../lib -lsss -o linear_regression_predict.out -Wall
  
+gcc data_provider.c  -I ../include -I ../include/error -I ../include/vector -I ../include/matrix  -I ../private/include -I ../private/include/error -I ../include/math -I ../include/ml_math -L ../lib -lsss -o data_provider.out -Wall
