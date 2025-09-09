@@ -678,7 +678,7 @@ if(rows_to_pick>1 && columns_to_pick>1)
 }
 
 //now set the size
-if(rows_to_pick==1) vector_size==columns_to_pick;
+if(rows_to_pick==1) vector_size=columns_to_pick;
 else vector_size = rows_to_pick;
 
 // now create the vector
