@@ -6,5 +6,7 @@
 #include<vector/sss_vector.h>
 #include<math/sss_math.h>
 #include<ml_math/sss_ml_math.h>
+#include<normalization/encoders.h>
+#include<normalization/scalars.h>
 
 #endif
