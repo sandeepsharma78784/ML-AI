@@ -1,0 +1,52 @@
+
+int main() {
+
+try {
+
+
+    NDArray ndArrayLeft({2,2,3});
+     NDArray ndArrayRight({2,3,2});
+     NDArray ndArrayResult({2,2,2});
+    // left first 2d
+     ndArrayLeft[0][0][0]=1;
+     ndArrayLeft[0][0][1]=2;
+     ndArrayLeft[0][0][2]=3;
+     ndArrayLeft[0][1][0]=4;
+     ndArrayLeft[0][1][1]=5;
+     ndArrayLeft[0][1][2]=6;
+    // left second 2d
+     ndArrayLeft[1][0][0]=7;
+     ndArrayLeft[1][0][1]=8;
+     ndArrayLeft[1][0][2]=9;
+     ndArrayLeft[1][1][0]=1;
+     ndArrayLeft[1][1][1]=2;
+     ndArrayLeft[1][1][2]=3;
+
+    // right first
+      ndArrayRight[0][0][0]=1;
+      ndArrayRight[0][0][1]=0;
+      ndArrayRight[0][1][0]=0;
+      ndArrayRight[0][1][1]=1;
+      ndArrayRight[0][2][0]=1;
+      ndArrayRight[0][2][1]=1;
+
+    // right second
+      ndArrayRight[1][0][0]=1;
+      ndArrayRight[1][0][1]=1;
+      ndArrayRight[1][1][0]=1;
+      ndArrayRight[1][1][1]=0;
+      ndArrayRight[1][2][0]=0;
+      ndArrayRight[1][2][1]=1;
+
+     NDArray::multiplication3D(ndArrayLeft,ndArrayRight,&ndArrayResult);
+    //  multiplication result
+    cout<<endl<<"mmultiplication result :-- "<<endl;
+     ndArrayResult.print();
+    
+}catch(const NDArrayException &e){
+
+
+    cout<<"NDArrayException caught: "<<e.what()<<endl;
+}
+    return 0;
+}

@@ -1,0 +1,107 @@
+static void multiplication3DOptimize(NDArray  &array1, NDArray  &array2, NDArray *arrayResult)
+        {
+         
+            std::vector<uint32_t> dimensions_m1 = array1.getDimensions();
+            std::vector<uint32_t> dimensions_m2 = array2.getDimensions();
+            std::vector<uint32_t> dimensions_m3 = (*arrayResult).getDimensions();
+            // validation to be applied
+            uint32_t depth = dimensions_m1[0];
+            uint32_t matrix1_rows = dimensions_m1[1];
+            uint32_t matrix2_rows = dimensions_m2[1];
+            uint32_t matrix2_columns = dimensions_m2[2];
+            uint32_t i,r,c,j;
+            //  populate matrix with 0 , since we need to accumulate product
+            for(i=0;i<depth;i++)
+            {
+                    for(r=0;r<matrix1_rows;r++)
+                    {
+                        for(c=0;c<matrix2_columns;c++)
+                                (*arrayResult).collection[(*arrayResult).getIndex({i,r,c})]=0;
+                            
+                    }
+            }
+
+            // multiplication
+             for(i=0;i<depth;i++)
+            {
+                     for(r=0;r<matrix1_rows;r++)
+                    {
+                        for(j=0;j<matrix2_rows;j++)
+                        {
+                            for(c=0;c<matrix2_columns;c++)
+                                (*arrayResult).collection[(*arrayResult).getIndex({i,r,c})]+=array1.collection[array1.getIndex({i,r,j})]* array2.collection[array2.getIndex({i,j,c})];
+                        }
+                    }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main() {
+
+try {
+
+
+    NDArray ndArrayLeft({2,2,3});
+     NDArray ndArrayRight({2,3,2});
+     NDArray ndArrayResult({2,2,2});
+    // left first 2d
+     ndArrayLeft[0][0][0]=1;
+     ndArrayLeft[0][0][1]=2;
+     ndArrayLeft[0][0][2]=3;
+     ndArrayLeft[0][1][0]=4;
+     ndArrayLeft[0][1][1]=5;
+     ndArrayLeft[0][1][2]=6;
+    // left second 2d
+     ndArrayLeft[1][0][0]=7;
+     ndArrayLeft[1][0][1]=8;
+     ndArrayLeft[1][0][2]=9;
+     ndArrayLeft[1][1][0]=1;
+     ndArrayLeft[1][1][1]=2;
+     ndArrayLeft[1][1][2]=3;
+
+    // right first
+      ndArrayRight[0][0][0]=1;
+      ndArrayRight[0][0][1]=0;
+      ndArrayRight[0][1][0]=0;
+      ndArrayRight[0][1][1]=1;
+      ndArrayRight[0][2][0]=1;
+      ndArrayRight[0][2][1]=1;
+
+    // right second
+      ndArrayRight[1][0][0]=1;
+      ndArrayRight[1][0][1]=1;
+      ndArrayRight[1][1][0]=1;
+      ndArrayRight[1][1][1]=0;
+      ndArrayRight[1][2][0]=0;
+      ndArrayRight[1][2][1]=1;
+
+     NDArray::multiplication3DOptimize(ndArrayLeft,ndArrayRight,&ndArrayResult);
+     
+    //  multiplication result
+    cout<<endl<<"mmultiplication result :-- "<<endl;
+    ndArrayResult.print();
+    
+}catch(const NDArrayException &e){
+
+    cout<<"NDArrayException caught: "<<e.what()<<endl;
+}
+    return 0;
+}

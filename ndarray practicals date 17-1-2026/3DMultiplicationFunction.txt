@@ -1,0 +1,34 @@
+  static void multiplication3D(NDArray  &array1, NDArray  &array2, NDArray *arrayResult)
+        {
+         
+            std::vector<uint32_t> dimensions_m1 = array1.getDimensions();
+            std::vector<uint32_t> dimensions_m2 = array2.getDimensions();
+            std::vector<uint32_t> dimensions_m3 = (*arrayResult).getDimensions();
+            // validation to be applied
+            // if array1[0] != array2[0] then issue
+            // if array1[2] != array2[1] then issue
+            // if(arrayResult[1]!= array1[1] && arrayResult[2] != array2[2]) // constainer size isse
+
+
+            uint32_t depth = dimensions_m1[0];
+            uint32_t rows = dimensions_m1[1];
+            uint32_t cols = dimensions_m2[2];
+            uint32_t common = dimensions_m2[1];
+            uint32_t i,r,c,j;
+            double sum=0.0;
+            for(i=0;i<depth;i++)
+            {
+                    for(r=0;r<rows;r++)
+                    {
+                        for(c=0;c<cols;c++)
+                        {
+                            sum=0.0;
+                            for(j=0;j<common;j++)
+                            {
+                                sum+=array1.collection[array1.getIndex({i,r,j})]* array2.collection[array2.getIndex({i,j,c})];
+                            } 
+                            (*arrayResult).collection[(*arrayResult).getIndex({i,r,c})] = sum;
+                        }
+                    }
+            }
+        }
