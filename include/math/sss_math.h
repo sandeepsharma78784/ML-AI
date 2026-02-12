@@ -19,4 +19,7 @@ sss_vector * sss_multiply_vector_with_scalar(const sss_vector *left_vector,doubl
 double sss_sum_vector(const sss_vector *vector, sss_err *error);
 double sss_mean_vector(const sss_vector *vector, sss_err *error);
 sss_vector * sss_substract_scalar_from_vector(const sss_vector *vector,double value, sss_vector *diffrence_vector_container,sss_err *error);
+
+sss_vector * sss_compute_sigmoid(const sss_vector *vector, sss_vector *sigmoid_vector_container,sss_err *error);
+
 #endif

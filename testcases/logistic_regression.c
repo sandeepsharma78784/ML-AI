@@ -144,6 +144,7 @@ uint32_t sss_data_provider_get_column_count(sss_data_provider *provider,sss_err 
 void do_something_like_fit(sss_data_provider *provider,uint64_t iterations,double learning_rate, FILE * plotline,FILE * ploterror,sss_err *error)
 {
     // iske pass provider ka structure aayega
+   
     uint32_t rows_filled_by_provider;
     sss_matrix *matrix=NULL;
     uint32_t matrix_rows_to_be_fetched;   // this is sample size,it will be size of input matrix , 
@@ -257,7 +258,10 @@ void do_something_like_fit(sss_data_provider *provider,uint64_t iterations,doubl
             XTE_vector=sss_vector_create_new(model_vector_size,error);   //
             if(XTE_vector==NULL) goto catch_error;
 
-            sss_vector_fill_random(model_vector,error); 
+           // sss_vector_fill_random(model_vector,error); 
+            sss_vector_set(model_vector,0,-0.5152,error);
+            sss_vector_set(model_vector,1,0.207,error);
+            sss_vector_set(model_vector,2,0.957,error);
     // container creation ends
 
 
@@ -314,13 +318,30 @@ FILE *fppp = fopen("dataaaa.csv", "w");  // clear the content
 
             // achi actual calculation start
                 Y_HAT_vector=sss_multiply_matrix_with_vector(X_matrix,model_vector,Y_HAT_vector,error);
+             
                 if(sss_has_error(error)) 
                 {
                  sss_get_error(error_message,4096,error);
                  printf(" here  %s\n", error_message);
                 }
+
+
+                // for logistic we have yhat x and m 
+                // pass this vector to get the sigmoid
+             //printf("##############----------------------------------------------------------------------------------------- model \n");
+            
+            //sss_vector_print(stdout,Y_HAT_vector,error);
+
+                Y_HAT_vector=sss_compute_sigmoid(Y_HAT_vector, Y_HAT_vector,error);
+             //printf("##############----------------------------------------------------------------------------------------- model \n");
+            // sss_vector_print(stdout,Y_HAT_vector,error);
+          // printf("##############----------------------------------------------------------------------------------------- model \n");
+           
+           // sss_vector_print(stdout,y_vector,error);
+            
+                // compute error
                 E_vector=sss_substract_vector(Y_HAT_vector,y_vector,E_vector,error);
-                ET_vector =  sss_vector_transpose(E_vector,ET_vector,error);
+               ET_vector =  sss_vector_transpose(E_vector,ET_vector,error);
                 error_value=sss_multiply_vector_get_scalar(ET_vector,E_vector,error);
                 XTE_vector = sss_multiply_matrix_with_vector(XT_matrix,E_vector,XTE_vector,error);
                 XTE_vector = sss_multiply_vector_with_scalar(XTE_vector,((1.0)/(X_matrix_rows))*learning_rate,XTE_vector,error);
@@ -379,7 +400,7 @@ FILE *fppp = fopen("dataaaa.csv", "w");  // clear the content
                 }
                 // plot iteratios vs eror
     }
-  sss_vector_write_csv(model_vector,"model.csv",error);
+  sss_vector_write_csv(model_vector,"modellogistic.csv",error);
 
 
 goto prepare_for_exit;

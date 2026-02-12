@@ -7,10 +7,10 @@
 using namespace std;
 int main()
 {
-    int matrix_1_rows= 2;
-    int matrix_1_columns = 3;
-    int matrix_2_rows= 3;
-    int matrix_2_columns = 2;
+    int matrix_1_rows= 4096;
+    int matrix_1_columns = 4096;
+    int matrix_2_rows= 4096;
+    int matrix_2_columns = 4500;
 
     vector<double> matrix_1(matrix_1_rows*matrix_1_columns);
     vector<double> matrix_2(matrix_2_rows*matrix_2_columns);
@@ -22,20 +22,22 @@ int main()
     value=10.0;
     // populate matrix 2
     for(int i=0;i<matrix_2.size();i++) matrix_2[i]=value++;
+   
 
-    int r,c,j;
-    double sum;
+
+     int r,c,c1;
     auto start_time= chrono::high_resolution_clock::now();
-    for(r=0;r<matrix_1_rows;r++)
+     // populate matrix 3
+    for(int i=0;i<matrix_3.size();i++) matrix_3[i]=0.0; //accumulate krege.
+    for(r=0;r<matrix_1_rows;++r)
     {
-        for(c=0;c<matrix_2_columns;c++)
+        for(c=0;c<matrix_1_columns;++c)
         {
-            sum=0.0;
-            for(j=0;j<matrix_1_columns;j++)
+            for(c1=0;c1<matrix_2_columns;++c1)
             {
-                sum+=matrix_1[r*matrix_1_columns + j]*matrix_2[j*matrix_2_columns +c];
+                matrix_3[r*matrix_2_columns +c1]+=matrix_1[r*matrix_1_columns + c]*matrix_2[c*matrix_2_columns +c1];
             }
-            matrix_3[r*matrix_2_columns +c]=sum;
+            
         }
     }
     auto end_time= chrono::high_resolution_clock::now();
@@ -44,14 +46,14 @@ int main()
     cout<<"Duration: "<<tt.count()<<"seconds"<<endl;
 
     // print product matrix
-    for(r=0;r<matrix_1_rows;r++)
-    {
-        for(c=0;c<matrix_2_columns;c++)
-        {
-            cout<<matrix_3[r*matrix_2_columns + c]<<" ";
-        }
-        cout<<endl;
-    }
+    // for(r=0;r<matrix_1_rows;r++)
+    // {
+    //     for(c=0;c<matrix_2_columns;c++)
+    //     {
+    //         cout<<matrix_3[r*matrix_2_columns + c]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
 
 
 

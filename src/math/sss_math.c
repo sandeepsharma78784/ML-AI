@@ -1,6 +1,7 @@
 #include<sss.h>
 #include<private_sss.h>
 #include<stdlib.h>
+#include<math.h>
 
 sss_matrix * sss_multiply_matrix(sss_matrix *left_matrix, sss_matrix *right_matrix, sss_matrix *product_matrix_container,sss_err *error)
 {
@@ -375,4 +376,51 @@ sss_vector * sss_substract_scalar_from_vector(const sss_vector *vector,double va
     sss_vector_set(difference_vector,i, difference_value,error);
     }
     return difference_vector;
+}
+
+
+// compute sigmoid
+sss_vector * sss_compute_sigmoid(const sss_vector *vector, sss_vector *sigmoid_vector_container,sss_err *error)
+{
+    char error_message[4096] ;
+    uint32_t i;
+    uint32_t vector_size;
+    uint32_t sigmoid_vector_container_size;
+    double sigmoid_value;
+    sss_vector *sigmoid_vector; 
+    if(error) sss_clear_error(error);
+    if(vector==NULL)
+    {
+        sss_set_error(error,"Null pointer",SSS_NULL_POINTER);
+        return NULL;
+    }
+    vector_size=sss_vector_get_size(vector,error);
+    if(sigmoid_vector_container==NULL)
+    {
+        sigmoid_vector=sss_vector_create_new(vector_size,error);
+        if(sigmoid_vector==NULL) return NULL;
+    }
+    else{
+        sigmoid_vector_container_size=sss_vector_get_size(sigmoid_vector_container,error);
+
+    if(vector_size != sigmoid_vector_container_size)
+    {
+        sprintf(error_message,"Invalid container size (%u)",sigmoid_vector_container_size);
+        sss_set_error(error,error_message,SSS_INVALID_VECTOR_CONTAINER_SIZE);
+        return NULL;
+    }
+    sigmoid_vector=sigmoid_vector_container;
+    }
+    double valll,v;
+    for(i=0;i<vector_size;++i)
+    {
+        v=sss_vector_get(vector,i,error);
+        valll= 1/exp(v);
+    sigmoid_value= 1.0 / (1.0 +valll);
+    // printf("[");
+    // printf("%llf, %llf, %llf",v,  valll, sigmoid_value);
+    // printf("], ");
+    sss_vector_set(sigmoid_vector,i, sigmoid_value,error);
+    }
+    return sigmoid_vector;
 }

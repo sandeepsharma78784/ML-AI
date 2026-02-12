@@ -182,7 +182,7 @@ void sss_matrix_print(FILE *file, const sss_matrix *matrix,sss_err *error)
 		fprintf(file, "%12.6lf ",sss_matrix_get(matrix,r,c,NULL)); //humko error nahi lena isliye NULL pass kiya
 			//note: yaha file==stdout aaya to monitor pr, and kisi file ka pointer aaya to file me
 		}
-		fprintf(file,"\n");
+		fprintf(file,",");
 	}
 }
 
