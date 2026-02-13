@@ -1,0 +1,87 @@
+
+        1000  sourcetmpindices 
+        1000  sourcefrom 
+        1033  sourceto 
+        last index =3
+        and 3r index ko 0 se 3 lek r gaye first looop khtm
+        1003 sourcetmpindices 
+
+        k=2 hua 
+        source_tmp_indeces[2] == source_to[2]  2==3 false
+        to k =2
+        sourctimpindices[2]++  [1013]
+        k++ to k=3
+        k<=lastindex mens 3<=3 true
+        source_tmp_indeces[3] = source_from[3]  0
+
+        sourcetmpindices= [1010]
+        phir vo first wala loop chla 
+        1013 sourcetmpindices 
+        k=2 pr ruka kyuk 1<3
+
+        ab 
+        sourctimpindices  [1023]
+        then 
+        sourctimpindices  [1020]
+
+        phir 2<3 
+
+        phir k=2 
+
+         ab 
+        sourctimpindices  [1033]
+        then 
+        sourctimpindices  [1030]
+        and 1030 se 1033 tk phla loop
+
+        next 
+             sourctimpindices  [1033]
+             3==3 to k-- to k=1
+
+             k=1 pr bhi donom me 0 and 0 
+             phir k-- to k=0 ho jayega 
+
+             ab maan lo sourcetp 2033 hota 
+             to k= 0  from ki value 0 and to ki value 2 
+              sourcetmpindece me k pr ++
+              means 1033 se 2003 ho jayega
+              is line se  source_tmp_indeces[k]++;
+              or phir k++ means k=1;
+              and k = 1,2,3 k liye ya loop chlega 
+              while (k <= last_index) {
+                    target_tmp_indices[k + offset] = target_from[k + offset]; // reset all indices to the right in target
+                    source_tmp_indeces[k] = source_from[k];
+                    k++;
+                }
+                and unme original value source se rkh di jayegi
+                2033 se 2000 ho jayega
+
+                and phir is blovk k liye vo pura chlega.
+
+
+                bahut hi majedar logic he.
+
+
+                last index ko 0 se pahuchaya
+                phir 2nd last pr aake bethe and 
+                last wale ko orgiginal se reset kiya 
+                
+                phir laset wale ko o se 3 phauchaya
+                 
+                phir third last pr aake bethe and
+                2nd last and last wale pr original data.
+
+                loop phir se start 
+
+                phir oth wale pr aake bethe and vo == nahi hue to phir 
+                1,2,3 me original copy kr diye and phir loop me ghus gaye 
+
+                ese saare combo bna liye.
+                
+
+
+
+
+
+        or 
+

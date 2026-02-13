@@ -1,0 +1,116 @@
+Goal:
+    abhi jo part 1 and part 2 me discuss kiya he usko practically kese krege kya kya ds lgega.
+
+
+Question: bias ko kahi bhi rkh skte he kya?
+Answer: yes but convention k hisab se first column me hi.
+
+*******************************************************************************************************
+Ab programmming ki baat
+suppose humne file se data read kr k input x bna liya and output y bna liya ,
+also input k first col me bias bhi add kr diya.
+kya kya chiz store krna he?
+    1. example load krege uske liye matrix
+    2. uske aage jitne layers and output layers uske liye matrix
+    3. models k liye matrix
+    4. step 1 and 2 me jitne vectors he 1*n k unka multiplication idr model matrix se hoga 
+        and v krke juch genrate hoga. ek nayi layer.
+        is output ko store krne k liye matrix 1* something ka .
+
+    5. 1&2 se neurons bnege
+       3 models
+       4 se neurons and model ka output, isko v se denote krege
+    6. khne ka mtlb har ka vector lena pdega.
+       menas 3 vectors bnege of NDArray * type [NDArray * kyu rkha iska explaination 10 ya 12 feb wale lecture me]
+    7. kinte matix lgege ye decide hua.
+        vector<NDArray *> nu(numberoflayers) // jitni layer utne matrix chahiye, har matrix kitne by kitne ka hoga abhi ye nahi btaya he.
+        vector<NDArray *> v(numberoflayers-1) // nuron layer  and model k product ka output. last wali layer ka koi output hi nahi bnega isliye 1 km
+        vector<NDArray *> model(numberoflayers-1) // ye bhi utne hi bnege jitne v 
+
+        //note kitne matrix bnege ye decide hua , har matrix ka size kitna hoga ye nahi.
+    8. nuron wale matrix bnate he , unka size to humko pta he
+        first wale ka size to , jitne input matix me column,
+        laste wala jitni classes.
+        bich k layers hum decide krege
+
+        nuron wale matix me har matrix me 1 hi column hoga , and rows to humne dekha hi .
+        to size ka vector lete he ek.
+
+        vector<uint32_t> nu_dimensions(x_columns,4,6,3,number_of_classes);
+                // nu_dimensions aa gaye, something*1  , where something is value of elements of nu_dimensions vector
+                // an hum NDArray bna skte he ye har matrix ka dimension deke.
+        for(int i=0;i<nu_dimensions.size();i++) nu[i]= new NDArray({nu_dimensions[i]}) // 1d bnane k liye 2nd dimension jo ki always 1 rahega pass nahi kiya.
+
+    9. v wale matrx bnate h, to unki size kitni hogi?
+        unka size hoga unke next neuron wali layer se ek km kyuki uski next wali layer isi se
+        bnti he activation fuciton se pass krne k baad and usme ek bias addd kiya jata he, isliye
+        v ka size nu_dimensions[i+1]-1 hoga
+
+        vector<uint32_t> v_dimensions(numberoflayers-1) // abhi dimesion rkhne k liye jagah bnai he value nahi rkhi he.
+                                // nu_dimensions ko to declare k time hi populate kr diya tha.
+                                // pr isko nahi , iski value nu_dimensions se hi calculate krege.
+            // v_dimensions k i pr nu_dimensions k i+1 pr jo value usme se ek km
+        
+        for(int i=0;i<v_dimensions.size()-1;i++)
+        {
+            v_dimensions[i]=nu_dimensions[i+1]-1;
+        }
+        v_dimensions[i]=nu_dimensions[i+1]   /// output layer k phle wala jo v hoga uska size output layer utna hi hoga.
+                                // kyuki output layer me bias nahi he.
+        // ab v wale NDArray bna skte he kyuki har NDArray ka dimension he.
+        for(int i=0;i<v_dimensions.size();i++) v[i]= new NDArray({v_dimensions[i]});
+
+    10. model k dimesion ready krna:
+            v=model*nu
+
+            ek training examle: jisme 5 features
+                nuron layer ka dimension= 5*1   // jisme 1 bias 
+                inka multiplya weight se = 1*5
+                weight means model 
+                pr agar v me 4 node chaiye to utne idr model bdane pdege.
+
+                ek model se ek node , to 4 node k liye 4 model
+                to model matrix ka size 4*5 
+
+                means har model matrix ka row index to vahi hoga, jitne v me node chahiye.
+
+                r index of model = r index of v
+                
+                c index of model = jitne feature utne column 
+
+            so final is:
+                 next layer k v ka size * previous layer ka nuron ka size
+                 [kinte models ]        * [model me kitne weights]
+
+            jine v hoge utne hi model bhi hoge and v hoge layers-1
+            number of v is always 1 less then number of nurons.
+
+            to model bnane me
+                 all layers of v
+                 first  n-1 layer of neruon
+    11. for(int i=0;i<v_dimensions.size();v++) model[i]= new NDArray({v_dimensions[i],nu_dimensions[i]});
+
+        isme model k dimension nahi bnaye, direct NDArray bna diye.
+    
+
+    note: v se next nuron layer bnnae k liye, v ko activation funciton se paas krte he and 1 bias add krte he.
+************************************************************************************************************************
+
+next: ab ye sb infra fix ho jayega. and inko baar baar bnne bidne k kaam nahi
+
+ab to bs 
+    for i=0;i<v_dimensions.size();i++
+    steps.  v[i]=model[i]*nu[i]
+            then nu[i] pr jo matrix he n*1 ka uske oth i index pr 1 rkh k , 
+            for(j=1;j<nu_dimensions[i].size();j++) 
+                    nu[j]=v[j]
+
+    repeat step 1
+        
+        
+
+
+
+
+
+        

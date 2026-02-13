@@ -1,0 +1,337 @@
+Question: abhi tk humne linear regression ki problem dekhi and then classifiction ki problem dekhi 
+            pr abhi tk humko uska purpose nahi pta and also ye bhi nahi pta ki 
+            or kitne type ki problem hoti he 
+Answer: purpose next question me dekhte he , abhi types dekhte he.
+        Tum puch rahe ho:
+        Kya problems sirf regression aur classification hi hoti hain?
+        Ya aur bhi types hoti hain?
+        ✅ Short Answer:
+        Regression aur classification main categories hain —
+        Lekin ML me aur bhi types ki problems hoti hain.
+        🔹 1️⃣ Supervised Learning
+                Isme labeled data hota hai.
+                (A) Regression
+                    Output = Continuous value
+                    Example: house price
+                (B) Classification
+                    Output = Category
+                    Example: spam / not spam
+        🔹 2️⃣ Unsupervised Learning
+                    Isme labels nahi hote.
+                (A) Clustering
+                    Data ko groups me divide karna
+                    Example: customer segmentation
+                (B) Dimensionality Reduction
+                    Features kam karna
+                    Example: PCA
+        🔹 3️⃣ Reinforcement Learning
+                Agent environment me action leta hai
+                Reward milta hai
+                Example:
+                Game playing
+                Robotics
+        🔹 4️⃣ Generative Problems
+                Ye special type hai 👇
+                Model naya data generate karta hai:
+                Text (LLM)
+                Image (Diffusion models)
+                Music
+                LLM technically:
+                👉 Next token classification karta hai
+                But practically:
+                👉 Generative model hai
+        🔹 5️⃣ Sequence Modeling
+                Time series prediction
+                Language modeling
+                Speech recognition
+        | Category       | Example                   |
+        | -------------- | ------------------------- |
+        | Regression     | Price prediction          |
+        | Classification | Spam detection            |
+        | Clustering     | Customer groups           |
+        | Reinforcement  | Game playing              |
+        | Generative     | ChatGPT, image generation |
+        | Time Series    | Stock prediction          |
+
+Abhi tk humne sir k jitne bhi lectues dekhe he unke regression and classification ki baat kri he.
+********************************************************************************************************************
+Question: linear regression mtlb kya?
+Answer:  linear regression me final output ek number hota he.
+        Output layer me:
+                Single real number.
+********************************************************************************************************************
+Question: Classification mtlb kya?
+Answer: output me jitni classes utni values
+        means output ek vector of values aayega
+        jisme har value ek probability represent krti he.
+
+        har example pr model update hota jayega.
+        ab testing k time pr kuch data pass krege , to jis bucket ya class me jyada probality aayegi
+        vo example us class ko represent krega.
+        example:
+                0 se 9 tk 
+                ek data paas kiya , maan lo 4 wale ki probality jyada aayi us data k liye
+                to vo data 4 hoga
+            digit k liye 10 class
+            similary jis chiz ka classification kr rahe he uski jitni categories he utni class bnegi.
+
+            10 hi callses ki probability ka sum 100% aayega.
+**********************************************************************************************************************
+Question: Binary Classification
+Answer: 2 classes
+        and dono ki probability ka sum 100% aayega
+*******************************************************************************************************************
+Question: jese regression me derivative nikalte he ese hi classifiction me bhi derivative nikalete he kya
+Answer:  ✅ Short Answer:
+            Haan. Bilkul nikalte hain.
+            Training ke time har neural network me derivative lagta hi lagta hai — 
+            chahe regression ho ya classification.
+        Training ka goal hota hai: loss km krna 
+            loss km krne k liye model ko adjust kna pdega.
+            model ko adjust krne k liye har weight ko kuch bdna ya ghatana pdega.
+            and pdana he ya ghatana he ye uske derivative k sign se pta chlta he
+            derivative + means weight bdane pr losss bdega
+            derivative - means weight bdane pr losss ghatega.
+            🔹 1️⃣ Regression Case
+                    Loss = Mean Squared Error (MSE) 
+                        L=(y−y^​)2
+
+                        iska derivative ya to positive ya negetive aayega.
+                        and weight ki info y ki definition me rahehi.
+            🔹 2️⃣ Classification Case
+                    Binary Classification:
+                            Loss = Binary Cross Entropy:
+                                L=−[ylog(y^​)+(1−y)log(1−y^​)]
+                            iska derivative ya to positive ya negetive aayega.
+                            and weight ki info y ki definition me rahehi.
+                    Multi-class Classification:
+                            Loss = Categorical Cross Entropy
+                                Softmax + Cross entropy ka derivative bhi nikalta hai.
+                                Interesting fact 🔥
+                                Softmax + CrossEntropy ka derivative simplify ho jata hai:
+                                    dZdL​=y^​−y
+                        Exactly regression jaisa form 😄
+        🔥 Important Insight
+                    Training ke time har jagah ye hota hai:
+                    Forward pass
+                    Loss calculate
+                    Backpropagation
+                    Derivatives calculate
+                    Weights update
+                    Chahe regression ho
+                    Chahe classification ho
+                    Chahe LLM ho
+                Sab me derivative lagta hai.
+            💡 Strong Line Yaad Rakho
+                    Agar derivative nahi niklega, to learning nahi hogi.
+            Derivative loss function ka.
+****************************************************************************************************
+dataset ka ek record load karo , 
+weight se multiply karo 
+y dash nikalo 
+then error nikalo,
+then us error se mse nikalo
+ab us mse se kese pta kre ki weight ko bdana he ya ghtana he , or kitna bdana he and kitna ghtana he
+to uske liye simple he derivative nikal lo mse wale formula ko 
+kiske respect me nikale?
+to suppose humane paas 5 features jinme ek bias he,
+to model ki size 4 hogi.us model me jitne elements hoge unko hi weight bole he
+
+un weights ka features k sath multiply kr k y^ nikale he 
+ans y-y^ kr k error nikalte he
+and (y-y^)^2 kr ke squered error nikalte he,
+
+since abhi humne single exaple load liya he to squered error hi niklega.
+agar multiple examples load krte to phir un sb examples k agains y^ niklte and
+har y^ k liye squered error nikale (y-y^)^2 
+and un sb ka sum kr k , number or examples se divide krte to 
+
+to mse niklta he.
+
+but since abhi hum single example load kr rahe he to squered error hi niklega.
+
+ab is is squered_error ko dekh k ye pta krna he ki weight ko bdaye ya ghtaye,
+to har weight k respect me us equation[jo weight and single example se bni he ] ka derivative nikalege.
+and usme ek learning rate kr k kuch value lege uska multiply krege and orignina weight me se usko km kr dege.
+
+to naya updated weight aa jayega, 
+ese model vector k har weight k sath krege
+and finally naya model vector humare pass hoga and ab naya example load krege.
+emans 1*C ka M*1 k sath multiply krege to scalar aa jayega, and usko hi y^ bolege.
+
+jaha C and M same hona hahiye
+
+note:
+    1 traning example k case me 
+    1*C ka M*1 = 1*1 aa raha tha 
+
+    n traning example k case me
+    n*C ka M*1 = n*1 aa raha tha   // is case me y^ ka ek matrix aaya iski ko error vector bhi bol skt he.
+
+    error k liye pure y^ vector pr iterate kr k (y-y^)^2 se update krte he.
+    and agar sbhi ka sum kr k n se divide kr de to mse aa jayega.
+
+    vo vo mse aayegi vo hi final error maani jayegi
+
+    But:
+        n training example ek sath load krte he to is case me mse ko dekh k weight ko kese update kre.
+        n training example me bhi hoga wahi equation ka derivative wrt weight hi niklega,
+        but jo result aayega usko n se divide krna he.
+    
+************************************************************************************************************
+
+Question: derivative hi kyu nikala
+Answer: since humne squered error nikali he , to humare paas ek value aayegi
+        ab hum chate he ki weight ko km kre ya bdaye to error km hogi ya jyada
+        we know linear regression means slope 
+        and slope means derivative of equation
+        jo jis equation se error nikala and uska derivative kr de to slope aa jayega
+        and and vo derivative ki value se pta chlega ki weight bdayege to kya hoga?
+
+        suppose:
+            ek he 
+                f(x)=x2 +p2 +q
+                df/dx​=2x
+
+            humara mksda ki jb hum x bdaye to is function ko value bdegi ya ghtegi?
+
+            Answer: ye pta chla he us function ka x k respect me derivative nikal kr
+                        agar derivative positive aaya to x ki value bdane pr function ki value bdegi
+                        and derivative negetive aaaya to function ki value ghtegi.
+
+            to humara loss function thaa (y-y^)^2 
+            and y is a function of x 
+            y=mx+C
+            to is y ka x k respect me derivative nikale to pta chl jayega ki 
+            x ko bdayege ko loss bdega ya ghtega.
+
+            pr hum har point pr to kese condition lagaye ki ab + kre ya - kre
+
+            to hum simple krte he
+            weight=weight- derivative
+            means derivative + aaaya means weight bdane pr loss bdega ,pr humko to loss km krna he
+            to humko weight- somthing kr na pdega..
+            and derivative - aaya to weight bdane se loss ghtega , and humko loasss km hi krna he
+            to humko weight + somthing krna pdega
+
+
+            means:
+                derivative + aaya he to loss ko or  km krne k liye:
+                        weight - somthing
+                derivative - aaya he to loss ko or km krne k liye weight ko bdayege:
+                        weight + somthing
+
+            derivative + : weight bdao loss bdgega    
+            derivative - : weight bdao loss km hoga.
+
+            to hum kr rahe he weight +/- somthing
+            to ye somthing kya?
+
+            to jo derivative aaya usme kuch multiply kr k , means little bit increase ya little bit decrease
+            to alpha that can be 0.1 to 0.000000000000000000000000000001
+
+            little bit bdana he.
+            and derivative isliye le rahe he ki bdane ghatne ka kaam uske sgign se automatically ho jayega.
+
+
+            weight - learning_rate*derivative;
+
+            ab derivative negetive aaayega to + ho jayega 
+            and derivative + aata he to ye - hi rahega measn - somthing
+
+            isliye humara update rule
+
+            weight= weight - ((d/dweight) of Equation)* learning_rate;
+
+            weight apne aap adjust hota jayega.
+
+
+            and signle example hota to no prom 
+            and multiple example hote to divided by n krna pdta
+***********************************************************************************************************
+Question: single example and multiple example
+Answer: single:
+           dataset se ek row means  ek example load kro , weight k sath multiply kro , 
+           ek scalar milega  ,
+           us scalar ko actual y se ghata k squere nikala
+           to loss aayega,
+           humara mksd he is loss ko 0 krna 
+           and loss kese nikala to vo he (y-y^)^2
+           isko km krna he to isme y k andr x he and means vo wight [model ki value]
+           ab us weight ko hi adjust krna he
+           and adjust krne k liye weight ko km ya jyada krna 
+           to hum derivative se decide kr skte he:
+            derivative positive : means wight bdao errro bdegi 
+                                    to is case me hum wight ko km krege [means something substract]
+            derivative negetive : means wight bdao errro ghtegi  
+                                    to is case me hum wight ko bdayege [means somthing add]
+            and esa har wight k liye krege and hr weight ko update krege.
+            and finally humare passs naya model ready.
+
+            naya example load krege :
+                model se multiply and again scalar aayega
+            same process repeat
+                and ek ek kr k dataset k saare rows uthao 
+            and phir jitne iteation krna ho same process ko utni baar iterate kr do.
+
+        multiple:
+           dataset k saare rows means  saare row  load kro , weight k sath multiply kro , 
+           ek vector milega, jinte weight utne size ka
+           uske har elements ko actual y se substract krege and squere krege   ,
+           and un sbka means nikalege, to mse aayega,
+           single example me only se aa rha tha 
+
+           yaha pr ye mse loss he loss aayega,
+           agar mse 0 means no loss.
+
+           humara mksd he is loss ko 0 krna 
+           and loss kese nikala to vo he (y-y^)^2 /n 
+           isko km krna he to isme y k andr x he and means vo wight [model ki value]
+           ab us weight ko hi adjust krna he
+           and adjust krne k liye weight ko km ya jyada krna 
+           to hum derivative se decide kr skte he:
+            derivative positive : means wight bdao errro bdegi 
+                                    to is case me hum wight ko km krege [means something substract]
+            derivative negetive : means wight bdao errro ghtegi  
+                                    to is case me hum wight ko bdayege [means somthing add]
+            and esa har wight k liye krege and hr weight ko update krege.
+            and finally humare passs naya model ready.
+
+
+            naya example load krege :
+                model se multiply and again scalar aayega
+            same process repeat
+
+single k case me har weight k respect me (y-y^)^2 iska derivative
+multiple k case me har weight k respect me (y-y^)^2/n  iska derivative
+and derivative ki jo bhi value aayegi suppose val
+to us val ko har weight me se - 
+for each wight
+        weight= wight- val   [derivative of loss function (y-y^)^2]
+
+            
+
+
+
+
+
+*************************************************************************************************************
+Question: humara focus weight ko bdana he ya ghtana he
+Answer: Hamāra focus weight badhāna ya ghatānā nahi hai.
+        Hamāra focus LOSS kam karna hai.
+        Weight to sirf ek knob (control) hai jise ghuma kar loss kam karte hain.
+        means ghata bhi skte he and bda bhi skte he [jis point pr bethe he us pr depend krta he]
+            means us point/example pr derivative ki value pr depend krega.
+
+        🧠 To weight kab badhega, kab ghatega?
+            Ye depend karta hai derivative ke sign par.
+
+            derivative positive:
+                    weight bdane se loss bdega
+                    to hum iska ulta krege kyuki humko loss km krna he.
+            derivative negetive:
+                    weight bdane se loss ghatega
+                    to hum esa hi krege kyuki humko loss km krna he.
+
+
+
