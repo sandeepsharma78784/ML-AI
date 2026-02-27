@@ -1,0 +1,196 @@
+iske phle tk ki summary:
+    matrix multiplication kiya normal rjjc wale rule se
+    then 
+    cache miss na ho uske liye rccj wala rule laga k multiply kiya
+    then 
+    outer loop ko thread pr distribute kiya, taki har iteration alag thread pr chle 
+    then 
+    #pragma se bhi parallelism achieve kiya.
+    then dekha ki jo outer loop ko multiple threads me distribute kr rahe he to usme kuch race conditino he kya.
+**************************************************************************************************************
+is lecture me discussion:
+    race condition nahi hogi kyuki r index har thread k liye unique hoga, and 
+    pick and update ka kaam r index pr hi ho raha he,
+    isliye race condition nahi hogi.
+    so humare cache miss wale algo rc1=rccc1 me race condition nahi hogi 
+    kyuki result ki puri ek row k upar koi ek thread hi kaam kregi.
+    t1 first row pr kaam kregi
+    t2 second row pr kaam kregi and all.
+
+abhi neural net pr jo training chlegi vo 18 ghnte bhi chl skti he, to usme liye humko optimize krna pdega.
+nn ko carry forward kr k cnn pr.
+organization huge computing power khareed leti he to hum vo bhi nahi kr skte he.
+
+
+to multiplication kese krna he ye sochna he:
+    jese 2D multiplication k liye 3 loops he ye to humko pta he
+    3 loops to 100% lgege.
+    but iske baad jo bhi dimensions bdayege unke liye kitne lgege koi gurantee nahi.
+    parallelism k liye omp ka use krege
+
+    abhi suppose 3 ndarray he n1 n2 n3 where n1 is left n2 is right and n3 is result
+    n3[r][c]= n1[r][c] * n2[c][c1]
+    esa kr skte he kyuki humne [] ko overload kr rkha he.
+
+    n1= [2,2,4,3]
+    n2= [2,2,3,2]
+    to n2  bnegga
+    [d1,d2,d3,d4,4,2]
+
+    ab multiplication me humko n1 k 3rd d ka first ka multiply n2 k 3rd d first element se hoga.
+    and dono k first element pr ek 2d rkha he
+    similarly second element pr bhi ek 2d rkha he.
+
+    abhi hum interal use k liye ye [][] ka use na krte hue 
+    address calculation pr khelte he.
+
+    jin 2 2d matrices ka multiply krna he kisi tarah se unka base address mil jayega.
+    phir data read/update krne k liye to hum address calculation kr lege and direct us address pr 
+    jump kr k read write kr skte he.
+
+    to humko 3 base addresses chahiye, phir humko is baat se bhi mtlb nahi he ki vo ndarray he ki kya he.
+    interal logic lagayege means in ndarray jo multiplication ka logic he uski baat he.
+
+    ab ndarray ka user [][] likh k logic bnayga, but abhi hum interal logic lgayege.
+    user k baare me nahi soch rahe he.
+
+ab kese krege address calculate:
+    socho ndarray he n1[2,2,4,3]
+    4*3 k 2  and ese 2 set.
+    to total 4*3 k 4 matrices
+
+    similarly n2[2,2,3,2]
+    isme 3*2 k 4 matrices.
+
+    to humko finally 4 2d arrays k dusre 4 2d arrays ka aapas me multiplication krwana he.
+    to hum kisi tarah se un pairs ka base address nikal le jinka aapas me multiplication hona he.
+    collection of pairs of base addrsses.
+
+    humko threads pr bhi nahi dalna , only omp ka clause dene se hi kaam ho jayega.
+
+ab ye base addresses kese milege iska math:
+    left= n1[2,2,3,4]: left se humko [0][0],[0][1],[1][0],[1][1] inke base address chahiye 
+    right= n2[2,2,3,2]: right se humko [0][0],[0][1],[1][0],[1][1] inke base address chahiye.
+    
+    or ye tay he ki multiplication 
+    left k [0][0] wale 2d ka right k [0][0] wale 2d se
+    left k [0][1] wale 2d ka right k [0][1] wale 2d se
+    same for 1,0 and 1,1
+
+    abhi know fact jo humare pass he vo he left and right k [0][0] ka address
+    ab isi se humko [0][1] , [1][0] and [1][1] ka base address calculate krna he.
+    suppose [0][0] ka 700 he to [0][1] ka kya aayega.
+    ab [0][0] pr jo 2d rkha he uska size 4*3 he and maan lo har cell ka size 1 byte to 
+    12 cell ka size 12 byte to is hisab se 
+    [0][1] ka base address 712
+    [1][0] ka base address 724 
+    [1][1] ka base address 736 
+
+
+    ab [1][1] se 736 nikalna he to kya formula bnega.
+
+    to humara actual array ka size he [2,2,3,4]
+     [1][1] k liye: 1*2*3*4 + 1*3*4
+     [1][0] k liye: 1*2*3*4 + 0*3*4
+     [0][1] k liye: 0*2*3*4 + 1*3*4
+
+     to ye vahi  logic he 
+     agar hum 4D ko 5D bhi kr de suppose
+     [8,2,2,3,4]
+     to [0,0,0] pr pde phle 2d ka address 700 he to 
+        0*2*2*3*4 +  0*2*3*4  +  0*3*4   [indice at that place multiplies by rest of the dimension size in array]
+        0 5th indice pr pda to iska [4,3,2,1] wali value se multiply jo ki [2,2,3,4] he
+        agla 0 4th indice pr pda to iska [3,2,1] wali value se multiply jo ki [2,3,4] he
+        agla 0 3rd indice pr pda to iska [2,1] wali value se multiply jo ki [3,4] he
+     to [8,2,2] pr pde  2d ka address kya hoga.
+     abhi 8 jo he to 5th indice pr pda 
+        8*[2,2,3,4] + 2*[2,3,4] + 2*[3,4] =
+        384+ 48 + 24 = 456
+
+to ye rahega base address calculation ka mtlb:
+    ab bs humko dimension mil jaye [2,3,4,3]
+    and vo indice chahiye jiska base address nikalna like [0][1]
+    to vo humara logic laga ke kaam ho skta he.
+
+****************************************************************************************************************
+ab ek bdi problem:
+    z[r][c1]=x[r][c]*y[c][c1]
+    abhi humne last session ye to decide kr liya ki multiplcaiton * function me na hoke
+    = function me hoga, is se  hum nayi memory bnane se bche .
+    but ab issue ye he ki  x[r][c] wali puri chain me kahi new ya delete use ho raha he kya?
+    VVVIMPPP:
+        x[r][c]
+        x k liye [] method chli
+            uske paas r as parameter jayega  usne kuch calculate kr k 
+            kuch return kiya man lo dummy to next state ment hoga
+        dummy[c]
+            ab us dummy jis class k object ko represent kr raha he uske liye []  method chli 
+            to is [] method me kahi new ya delete ka use kiya he kya?
+        [] me jo return kr rahe he vo new se bna he kya
+        ye vector involved he kya?
+        agar haa to vector k piche to new he. 
+        ye humara concern he.
+
+        means har [] me vector use kr rahe h and uski vajah se new and delete ka issue aayega
+
+        hum jo kr rahe he address pkd k kaam usme nahi aayega
+        but [][] is chahinig wale tarike me vo issue aayega and ye performance ki watt laga dega.
+        new and delete is dushman to performance
+
+abhi c++23 :
+    bahut badi problem inhone dur kri he.
+    isne ek khubsurat feature introduce kiya he vo ye he
+    feature ye he ki aap esa likh skte ho:
+        k[2][3][4]
+
+        operator [](int e, int f, int g)
+
+    is se vo sara jhanjat khtm ho gaya ki k ke liye [] chlega phir vo object bna k return krega 
+    again uske upar [] chlena and final [] wall call actual data return krega.
+
+    to ye sb kaam hi khtm ho gaya:
+
+    to humko bs compiler update krna he.
+    agar 23 tk nhi jaata he to compile time pr 
+    -std=c++23 kr k compile kr dege.
+
+    pr point ye he ki humare problem is feature se bhi solve nahi ho rahi he.
+    Reason:
+        kyuki programming krte time dimensions known nahi he
+    uska solution:
+        variable arguments pass kr k kr skte he. varg wali programming.
+
+    jese printf() c ka fnction he and c me to polymorphism he hi nahi , 
+        pr kbhi hum 3, kbh 2 , kbhi 4 , to esa to nahi  ki multiple printf bne
+        pr printf is tarah se  bna he ki vo variable number of arguments le skta he.
+
+    to humara ndarray wala kaam 
+        variable number of arguments se ho payega kya?
+
+    operator [] ko overload krna he with variable number of arguments.
+
+    means user:
+        a[1,2,3]
+        a[2,3,4,5]
+        a[2,3,4,5,5,6]
+    humko ek hi operator[] function likhna he , and vo upar wale saare scenario k liye kaam kr jaye.
+
+
+    to humare aaj k lecture ka main maksad tha [][] ye jo operators [] function call hoge 
+    inke piche se new and delete nikalna chahte he.
+
+    humko sochna he .
+    pr iska solution he , jis se baar baar new and delete na ho.
+
+
+***********************************************************************************************
+task from sir:
+    1. operator [] ko overload krna he , iske piche new and delete chl raha he kya baar baar 
+        agar haa to usko avoid krna he
+    2. esa kuch poc kr k dekhna he jis se hum ye pkd paaye ki omp kitne threads bnata he.
+        is se pta chlega ki vo logical processor mtlb k bhi he ya nai.
+        logical core ki khani smjhni and ye dekhna ki vo kaam aa bhi rahe he ya nahi.
+    3. -o2 -o3 use krna he.
+    4. 
+
+

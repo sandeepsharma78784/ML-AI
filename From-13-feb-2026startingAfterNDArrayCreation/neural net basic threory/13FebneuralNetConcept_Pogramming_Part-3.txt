@@ -96,7 +96,7 @@ kya kya chiz store krna he?
     note: v se next nuron layer bnnae k liye, v ko activation funciton se paas krte he and 1 bias add krte he.
 ************************************************************************************************************************
 
-next: ab ye sb infra fix ho jayega. and inko baar baar bnne bidne k kaam nahi
+next: ab ye sb infra fix ho jayega. and inko baar baar bnne bigadne k kaam nahi
 
 ab to bs 
     for i=0;i<v_dimensions.size();i++

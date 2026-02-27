@@ -1,0 +1,13 @@
+last session ka kuch check krna tha.
+***************************************************************************************
+next:
+    neural net me jitne models he un 
+    model ko random se fill krna he.
+
+
+
+*******************************************************************************************************
+Qustion section of the session:
+    1. how to generate random in c++
+    2. bina distributtion wale concept k random number kese generate kr skte he.
+    
