@@ -26,6 +26,10 @@ or saare lectures dekhna he one by one
 14 april
 16 april, 18 april cancelled
 21 april
+23 april
+25 april  // aaj prcatical zip diya tha sir ne download kr k kuch naya fucntion ka assignmet diya tha
+30 april // 28 april wala cancelled
+
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
     03-feb se 26 feb tk ki bhi recording dekhna he vo baad me 
