@@ -29,12 +29,9 @@ or saare lectures dekhna he one by one
 23 april
 25 april  // aaj prcatical zip diya tha sir ne download kr k kuch naya fucntion ka assignmet diya tha
 30 april // 28 april wala cancelled, sir ne kuch naya kiya and zip download krne boli 
-
-to be  conducted
-2 may
-5 may 
-7 may 
-9 may 2026 // cancelled , sir will be out of station
+2 may  // missed and to be be aploaded from silki
+5 may  // uploaded
+7 may 9 may 2026 // cancelled , sir will be out of station next willl on 12 may 
 
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
