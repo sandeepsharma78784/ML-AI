@@ -34,7 +34,9 @@ or saare lectures dekhna he one by one
 7 may 9 may 2026 // cancelled , sir will be out of station next willl on 12 may 
 
 12 may 
-14 may vvvvimp lecture, iske baad neural net k lectures aayega , isko acche se dekhna he , aaj ki zip bhi he latest
+14 may vvvvimp lecture, iske baad neural net k lectures aayega ,
+         isko acche se dekhna he , aaj ki zip bhi he latest
+         iski 'practical latest till 14 may' wale folder me aaj tk ka code he
 16 may // cancelled next will be on 19 may.
 
 **************************************** 
