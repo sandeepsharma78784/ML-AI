@@ -29,7 +29,7 @@ or saare lectures dekhna he one by one
 23 april
 25 april  // aaj prcatical zip diya tha sir ne download kr k kuch naya fucntion ka assignmet diya tha
 30 april // 28 april wala cancelled, sir ne kuch naya kiya and zip download krne boli 
-2 may  // missed and to be be aploaded from silki
+2 may  // missed and to be be aploaded from silki, uploaded
 5 may  // uploaded
 7 may 9 may 2026 // cancelled , sir will be out of station next willl on 12 may 
 
@@ -38,7 +38,9 @@ or saare lectures dekhna he one by one
          isko acche se dekhna he , aaj ki zip bhi he latest
          iski 'practical latest till 14 may' wale folder me aaj tk ka code he
 16 may // cancelled next will be on 19 may.
-
+19 may // aaj ka lecture vvimp he isme humne model train ka program likhaa nd usme ndarray use kiya
+       // humko 14 may wala repo recording dekh k update krna he and code push krna he.
+       // recording uploaded for this day , only we have to update the code for 14may 2026 based on the lecture and push it.
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
     03-feb se 26 feb tk ki bhi recording dekhna he vo baad me 
