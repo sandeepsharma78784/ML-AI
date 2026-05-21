@@ -40,7 +40,9 @@ or saare lectures dekhna he one by one
 16 may // cancelled next will be on 19 may.
 19 may // aaj ka lecture vvimp he isme humne model train ka program likhaa nd usme ndarray use kiya
        // humko 14 may wala repo recording dekh k update krna he and code push krna he.
-       // recording uploaded for this day , only we have to update the code for 14may 2026 based on the lecture and push it.
+       // recording uploaded for this day , only we have to update the code for 
+       //14may 2026 based on the lecture and push it.
+       // also traning data set ka url https://thinkingmachines.in/downloads/tmdigits.csv
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
     03-feb se 26 feb tk ki bhi recording dekhna he vo baad me 
