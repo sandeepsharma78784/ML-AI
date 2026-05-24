@@ -43,6 +43,13 @@ or saare lectures dekhna he one by one
        // recording uploaded for this day , only we have to update the code for 
        //14may 2026 based on the lecture and push it.
        // also traning data set ka url https://thinkingmachines.in/downloads/tmdigits.csv
+21 may // latest code to be added in 'practical latest till 14 may'
+23 may  // vvimp isme kese image k pixel ko as a training example bihera input layer me, 
+       // also iteraor nahi he ndarray me to (auto x: NDArray ) loop nahi lga skte , conventional se kiya
+       //any how is lecture ko 4-5 dekhna he 
+       // isme jo target_y me value set kri he us line of code me kuch issye he 
+       // vo x_rows-1 nahi x_columns-1 hoga.
+       // 24 may ka lecture miss nahi krna he 
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
     03-feb se 26 feb tk ki bhi recording dekhna he vo baad me 
