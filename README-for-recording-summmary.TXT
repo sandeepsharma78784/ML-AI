@@ -49,7 +49,9 @@ or saare lectures dekhna he one by one
        //any how is lecture ko 4-5 dekhna he 
        // isme jo target_y me value set kri he us line of code me kuch issye he 
        // vo x_rows-1 nahi x_columns-1 hoga.
-       // 24 may ka lecture miss nahi krna he 
+       // 26  may ka lecture miss nahi krna he 
+26 may // imp lecture we have some assignment, complete it
+28 may // cancelled next will be on 30th may
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
     03-feb se 26 feb tk ki bhi recording dekhna he vo baad me 
