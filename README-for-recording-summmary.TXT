@@ -51,7 +51,10 @@ or saare lectures dekhna he one by one
        // vo x_rows-1 nahi x_columns-1 hoga.
        // 26  may ka lecture miss nahi krna he 
 26 may // imp lecture we have some assignment, complete it
-28 may // cancelled next will be on 30th may
+28 may , 30 may // cancelled 
+2 june, get from silki and uploaded
+4 june , uploaded. // discussed how infixexpression works
+
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
     03-feb se 26 feb tk ki bhi recording dekhna he vo baad me 
