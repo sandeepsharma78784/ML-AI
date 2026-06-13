@@ -57,7 +57,8 @@ or saare lectures dekhna he one by one
 6 june off.
 9 june , uploaded and 1 new zip sized 8.12 mb, uploaded in drive not in repo, 
         so donwload zip file dated 9 june from drive to practical till 9 june.
-
+11 june, attended loaded.
+13 june , there are two part + program zip as well loaded for 13 june
 
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
