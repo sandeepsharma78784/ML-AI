@@ -59,6 +59,13 @@ or saare lectures dekhna he one by one
         so donwload zip file dated 9 june from drive to practical till 9 june.
 11 june, attended loaded.
 13 june , there are two part + program zip as well loaded for 13 june
+16 june, uploaded the video and gip file for program till date.
+18,20 june, class not held,
+23 june , uploaded rec+cppjetml
+25 june , uploaded video   // sir suggested one project , to build a compiler that give support for arr*arr
+                        // a new language, the thing is discussed in recording end.
+27 june , uploaded video and cppjetml
+
 
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
