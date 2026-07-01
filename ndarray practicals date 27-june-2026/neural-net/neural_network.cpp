@@ -45,7 +45,6 @@ for(idx=0;idx<layer_wise_neurons_count.size()-1;++idx)
 {
 layersTransposed[idx]=new NDArrayTransposedView(layers[idx],true);
 }
-
 vector<NDArray *> z(layers.size()-1);
 vector<NDArray *> lower_case_deltas(layers.size()-1);
 for(idx=1;idx<layer_wise_neurons_count.size()-1;++idx) 
@@ -96,7 +95,6 @@ uint64_t ii,jj;
 jj=layers.size()-1;
 int iii;
 int previous_target_y=1;
-int current_target_y;
 for(iii=0;iii<10;++iii) target_y[iii]=0.0;
 vector<NDArrayTransposedView *> model_tvs(lower_case_deltas.size()-1);
 vector<NDArray *> tmps(lower_case_deltas.size()-1);
@@ -110,7 +108,6 @@ tmps[iii]=new NDArray({layer_wise_neurons_count[iii+1]});
 g_dash[iii]=new NDArray({layer_wise_neurons_count[iii+1]-1});
 tmp_views[iii]=new NDArrayView(tmps[iii],{1},{layer_wise_neurons_count[iii+1]-1},true);
 }
-
 uint64_t cycle=1;
 while(cycle<=TRAINING_CYCLES)
 {
@@ -126,11 +123,7 @@ for(x_row_index=0;x_row_index<x_rows;++x_row_index) // after testing, change <1 
 {
 // pick x_row_index-th row and place it on first layer
 NDArray::copy(*(layers[0]),{0},x,{x_row_index,0},{x_row_index,x_columns-1});
-target_y[previous_target_y-1]=0.0;
-current_target_y=(int)(target_class[x_row_index]-1.0);
-target_y[current_target_y]=1.0;
-previous_target_y=current_target_y;
-
+NDArray::copy(target_y,{0},y,{x_row_index,0},{x_row_index,9});
 for(ii=0;ii<jj;++ii)
 {
 *(z[ii])=(*(models[ii]))*(*(layers[ii]));
@@ -151,9 +144,14 @@ for(--iii;iii>=0;--iii)
 // update upper_case_deltas
 for(idx=0;idx<upper_case_deltas.size();++idx)
 {
+cout<<"Training started 8"<<endl;
+
 *(tmp_upper_case_deltas[idx])= *(lower_case_deltas[idx])*(*(layersTransposed[idx]));
 *(upper_case_deltas[idx])=*(upper_case_deltas[idx])+ (*(tmp_upper_case_deltas[idx]));
 }
+cout<<"Training started 9"<<endl;
+
+
 } // loop on x rows ends here
 // something to compute cost
 // 1/m summation summation (-y)*log(y_hat) - (1-y)*log(1-y_hat) + reg/2m summ summ summ theta^2
