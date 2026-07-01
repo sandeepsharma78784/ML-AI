@@ -65,6 +65,7 @@ or saare lectures dekhna he one by one
 25 june , uploaded video   // sir suggested one project , to build a compiler that give support for arr*arr
                         // a new language, the thing is discussed in recording end.
 27 june , uploaded video and cppjetml
+            all done , now we have to run it , resolve and note the exceptions.
 
 
 **************************************** 
