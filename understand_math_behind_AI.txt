@@ -1,0 +1,16 @@
+Main tumhe ye sequence me padhaunga:
+Lecture 1: Derivative kya hota hai? (slope, intuition, graph ke bina confusion ke)
+Lecture 2: Chain Rule kya hota hai? Aur multiply hi kyu hota hai?
+Lecture 3: BCE ka derivative.
+Lecture 4: Sigmoid ka derivative.
+Lecture 5: Dono ko combine karke prove karenge ki
+δ=y^−y
+Lecture 6: Phir matrix form me
+dW=δ×aT
+kyu aata hai.
+
+********************************
+Question: δ=y^−y kese aaya?
+Answer: hum dekhte he ki weight*training_Data=prediction    
+                    and expected y hota he.
+        to hum likhte he ki error = y-y_hat

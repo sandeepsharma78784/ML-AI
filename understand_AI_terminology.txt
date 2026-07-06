@@ -1,0 +1,163 @@
+1. Loss and delta kya he?
+    Loss = "Kitni galti hui?"
+    Delta = "Galti ko theek karne ke liye kis direction me aur kitna badlo?"
+             Delta loss ke basis par hi decision leta hai.
+             Lekin delta khud decision nahi leta. Delta, loss ka derivative hai, 
+             aur derivative hi direction batata hai.
+    | Cheez                              | Matlab                                                            |
+    | ---------------------------------- | ----------------------------------------------------------------- |
+    | Prediction (ŷ)                     | Model ka output                                                   |
+    | Actual (y)                         | Correct answer                                                    |
+    | **Loss (L)**                       | Prediction kitni galat hai (ek scalar number)                     |
+    | **Delta (δ)**                      | Loss ka derivative w.r.t. `z`, jo backpropagation me use hota hai |
+    | Gradient ((\partial L/\partial W)) | Weights ko update karne ke liye use hota hai                      |
+
+    Ek simple example (Neural Network ke bina):
+        Maan lo ek function hai:
+                L(w)=w^2
+            Yahan:
+                w = weight
+                L = loss
+        ab maan lo:
+             w=3 to loss is 3 ka squere to loss=9
+        Ab sawal:
+            Weight ko kis direction me move karun taaki loss kam ho?
+            humara mksad he loss ko 0 krna 
+            3 se 4 kare ,ya 3 se 2 kare 
+            ya 3 se 3.1 ya 2.9? ye decision kese le?
+        Iske liye derivative nikalte hain:
+            derivative means change with resect to .
+            to loss function ka derivative with respect to w 
+            to formula bnega:
+                dL/dw​ =d(w^2)/dw = 2w;
+
+                abhi humara w=3 tha to 
+                dL/dw=2w=2*3=6 aaya
+            to yaha decision kese lete he:
+                Ye +6 kya bol raha hai?
+                    "Agar weight ko aur badhaoge, to loss aur badhega."
+                ye -6 hota to:
+                    Agar weight ko aur badhaoge, to loss kam hoga.
+                Isliye gradient descent opposite direction me jata hai. 
+            | Gradient | Matlab                            | Optimizer kya karega? |
+            | -------- | --------------------------------- | --------------------- |
+            | +6       | Weight badhane se loss badhta hai | Weight kam karega     |
+            | -6       | Weight badhane se loss ghatta hai | Weight badhayega      |
+            | 0        | Idhar loss change nahi ho raha    | Weight wahi rakhega   |
+            Positive gradient = "Right (weight badhane) mat jao."
+            Negative gradient = "Right jao, loss kam hoga."
+        derivative se pta chl gaya ki kidr jaana he to :
+            since gradient descent opposite chlta he to formula bnega
+            New Weight = Old Weight - Learning Rate × Derivative
+        ab:
+            New Weight = 3 - 0.1×6 = 2.4
+        Phir Loss check karo:
+            Old Loss = 9
+            New Loss = 2.4² = 5.76
+        Loss kam ho gaya.
+
+
+    Neural Network me bhi wahi hota hai:
+        Network me loss bahut complicated function hota hai:
+            yaha chain rule lgta he because yaha weight direct loss me conntribute nahi krta.
+            bich me steps aate he.
+
+            Weight
+            ↓
+            z
+            ↓
+            Sigmoid
+            ↓
+            Prediction
+            ↓
+            Loss
+        weight se z 
+        z se sigmoid
+        sigmoid se prediction the final result 
+
+        Loss is not directly related to weight,
+        it related to sigmoid 
+        and sigmoid related to z 
+        and z related to weight.
+
+        isi ko chain rule bolte he.
+    dL/dw nikalna ho to chain me jaana pdega.
+
+1  how dL/dw calculated? Loss in neural network.
+   agar normal function he to weight direct contribute to loss.
+   but in case neural Network , weight not directly contribute to loss.
+   there are multiple things in between.
+   see:
+      hum model*layer=z   [weight*layer=z]
+       phir sigmoid(z) = y^   // agar bich ki layer me he to layer[i] activation layer.
+       phir y^ se loss. = L
+
+       ab y^ is not equal to expected y means kahi na kahi glti hui he.
+       to iske piche wali layer pr blame jayega. z pr ,
+       pr z ko kisne change kiya  , weight ne , w ne .
+    steps:
+        1. Weight thoda badla w to z badlega
+        2. z bdla to y^ bdlega 
+        3. y^ bdlega to Loss change hoga.
+    dL/dw= dL/dy^ * dy^/dz * dz/dw
+        loss L related to y^ 
+        y^ related to z 
+        z related to w
+    So:
+        w ko bdlne k liye gradient nikalna pdega , gradient means Loss function ka derivative.
+        jese humne normal me loss function dekha tha L=w^2
+        abhi yaha loss function he cross entropy
+    So:
+        humne loss funciton liya:  L=−(ylog(y^​)+(1−y)log(1−y^​))
+                                   y^= σ(z) = σ(z)=1/(1+e^-z)​
+                                   z= model*input // or we can say model*layer 
+                                                 // means z=W*x or W*layer[i], means neurons.
+                                                 // wese activation layer hoti he z to temporary he 
+                                                 //activation layer=z+b but b is constat do derivatinve me 0 ho
+                                                 //jayega and finally z hi bchega jo ki W*x+b se
+                                                 // W*x hi reh jayega.
+        now:
+            dL/dw= dL/dy^ * dy^/dz * dz/dw
+            isme :
+                A. dL/dy^= d(−(ylog(y^​)+(1−y)log(1−y^​)))/dy^=  (−y/^​y)​+(1−y)/(​1−y​^) 
+                        ya btaya he "Prediction (y^) ko thoda badalne se loss kitna badlega?"
+                B.  dy^/dz =  dσ(z)/dz = d(1/(1+e^-z)​)/dz 
+                                =σ(z)(1−σ(z))= y^(1-y^)
+                C.  dL/dy^ * dy^/dz= y^​−y [finally] 
+                    dL/dz= delta(δ) =y^-y ye aaya A and B se.
+                D. dz/dw = d(w*x)/dw                           //z= W*x+bias   , b is constant so no mateer in derivative. 
+                          =x
+            
+            dL/dw= A*B*D = (y^-y)*x;  // yaha pr x = previous input or activation.
+
+            to weight kitna change krna he iska formula aa gaya.
+            ab y^-y humne calculate kr liya he jisko lowercase_delta me rkha.
+            dL/dw= lowercase_delta*x
+                 = matrix of size = actual model or W jisko change krna he.
+                 = M1 or M2 or M3
+
+
+2. gradient kya he
+   gradient is the derivative of loss function with respect to weight.
+   upar point 1 me dL/dw
+3. learning rate
+   weight ko update krne k liye gradient nikalte he loss ka and then 
+   weight=weight-gradient
+   but direct gradient minus nahi krte 
+   reason:
+        Case 1: Gradient bahut bada hai
+                New Weight = 5 - 100=-95 ho jayega.
+                Tum sirf thoda sa move karna chahte the, lekin ek hi step me bahut door chale gaye.
+                Loss kam hone ki jagah badh bhi sakta hai.
+        Case 2: Gradient bahut chhota hai
+                New Weight = 5 - 0.000001= 4.999999
+                Itna chhota update hua ki model bahut slow seekhega.
+    Learning rate kya karta hai?
+        Learning rate gradient ka volume control hai.
+    Gradient batata hai:
+        ➡ Kis direction me jana hai?
+    Learning Rate batata hai:
+        ➡ Kitna door jana hai?
+    isiliye:
+        New Weight = Old Weight - Learning Rate × Derivative
+

@@ -1,0 +1,347 @@
+architecture dekhte he sbse phle to:
+    x: csv se data load krege.
+    y: expected output
+    y_hat: result 
+    layers: har layer me kuch neurons hoge jee first me 400, and last me 10 
+    layers[] = neurons ki current values
+    models[] = neurons ke beech ke weights
+    models * layers = next layer ke neuron values generate karta hai.
+
+    to next layer me already kuch value hogi na right , ya ye value jayegi jo models*layers krne se bnegi
+
+4th wala point pdna he 
+6th wala to see about gradient
+
+1. abhi humara flow kya he.
+    CSV me ek image k 400 pixel bichaye ek row me and esi 5000 images lekr model ko train krne ka plan he.
+    har image ko 10000 iterations se pass krege.
+    so total 10000*5000 = 50000000
+
+    SO:
+    1. CSV se ek row uthai.
+        x
+        2 5 1 8 9 ...
+
+
+********************
+layers[0]: Input Image , 400*1
+model0: weights that muliplies neuron from layers[0] and produce Z 
+        suppose layers[0]= 400*1 and Z is view of hidden_layer1 withoud bias and hidden layer have 5 neurons
+        then Z would have 4 neuron and its size would be 4*1
+        so 400x1 * mxn =  4x1
+        to ye to tbhi possible he jb modelko phle rkha jaye 
+        so  mxn  * 400x1 =  4x1
+        ab saaf pta chl raha he m ki value 4 and n ki value 400 , so model will be 4x400 hoga.
+        isme weights hoge, random value.
+    So: model 0 multiplies input layer produce z 
+        then sigmoid(z) ko layers_view me daal dege.
+        layersbiew is layer ka hi view he bs bias chod ke
+        ye koi alag memory nai he layer ki hi memory he .
+    for(ii=0;ii<jj;++ii)
+    {
+    *(z[ii])=(*(models[ii]))*(*(layers[ii]));
+    *(layers_views[ii])=sigmoid(*(z[ii]));
+    }
+    agar layersview nahi lete to 
+    z[ii] pr loop laga ke for k=0;k<zz[i].size();k++{ layers[ii][k+1]=zz[k]} esa kena pdta
+    bs is point k baad layers view ka kaam khtm.
+    ab next layer me data chla gaya.
+
+    z=model0*input  //layer0
+    layer1view=sigmoid(z)  // is se layer1 me index 1 se index n-1 tk data update ho jayega.
+
+layers[1]: Hidden Layer 1 
+            isme pichlli pichle model ka pichli layer se multiy kr k jo z aaya uska sigmoid nikal kr
+            jo aaya vo content he and 0th index pr 1 he.
+
+            ab phir vahi process 
+            z=model1*layer1
+            layer2view=sigmoid(z) // is se layer me index 1 se index n-1 tk data update ho jayega.
+layers[2]: Hidden Layer 2 
+            ab phir vahi process 
+            z=model2*layer2
+            layer3=sigmoid(z) // is se layer me index 1 se index n-1 tk data update ho jayega.
+
+            // is baar layer 3  k view ki jarurat nahi pdi kyuki layer 3 me bias ad nahi krna 
+layers[3]: Final Prediction
+
+            ye he y_hat
+            x ki first row ko model and layer se nikala to final layer me jo output aaya 
+            ab is x se related y hoga kahi to . 
+            pr is baar y ko simple nahi rkha uski encodeing kri he.
+            e.g.:   
+                10 target class he 
+                5000 input he and har input k last column me uski target class he .
+                jese row0 ki target class 3
+                means row0 me jo image pdi he uske pixel ko model se paas kroge to 
+                uska Prediction 3 aana chahiye.
+                means ek number
+                but prediction to ek array aa raha he 10 size ka.
+            to isiliye y ko bhi 10 size k 1 hot encoeing kri.
+            1 2 3 4 5 6 7 8 9 10 
+            0 0 1 0 0 0 0 0 0 0    y
+
+            isiliye humara y bna he 5000x10 ka. na ki 5000x1 ka . 
+
+            ab y_hat jo ki layer3 he then output uski value kuch esi hogi.
+            phle Z
+            z =
+            2.1  0.3  5.2  1.4  -0.5  0.8  0.1  1.0  -2.0  0.4
+            then 
+            iske baad sigmoid
+            layer3=sigmoid(z);  //σ(z) = 1 / (1 + e^(-z)), Ek single value leta hai aur usko 0 aur 1 ke beech map karta hai.
+            and y_hat=layer3
+            y_hat =
+            0.89 0.57 0.99 0.73 0.52 0.62 0.60 0.69 0.55 0.65
+            Notice:
+                Ye 10 independent outputs hain.
+                Inka sum 1 nahi hai.
+                Phir bhi training ho sakti hai.
+                Loss har output neuron ke liye separately compute hota hai.
+                Yaani har neuron independently seekhta hai.
+
+
+            /*
+            sigmoid ki jagah softmax bhi nikal skte he , pr sigmoid kyu liya ye discuss krna he.
+            ek reason to ye ho skta he:
+                Sigmoid = ek neuron ki probability. // hum har neuron ko train kr rahe he shayad isliye 
+                Softmax = poore output layer ki probabilities.  // ye puri layer ki combined prob he.
+            z =
+            2.1  0.3  5.2  1.4  -0.5  0.8  0.1  1.0  -2.0  0.4
+            then 
+            Iske baad output layer par generally Softmax lagti hai.
+                Softmax:Softmax poore vector ko ek saath dekhta hai.
+                Properties:
+                    Har value 0 aur 1 ke beech hoti hai.
+                    Sab probabilities ka sum = 1.
+                    Sabse badi probability predicted class hoti hai.
+            layer3=sigmoid(z);
+            and y_hat=layer3
+            y_hat =
+            0.03 0.01 0.88 0.02 0.01 0.02 0.01 0.01 0.00 0.01
+            Notice:
+                Sab values 0 se 1 ke beech hain.
+                Sabka sum 1 hota hai.
+                Ye probabilities hain. not the exact value
+
+                | Problem                                                                    | Output Activation |
+                | -------------------------------------------------------------------------- | ----------------- |
+                | Binary classification (Cat vs Dog)                                         | **Sigmoid**       |
+                | Multi-class classification (10 digits, sirf ek correct class)              | **Softmax**       |
+                | Multi-label classification (Ek image me Cat + Dog + Car sab ho sakte hain) | **Sigmoid**       |
+                Yaad rakhne ki trick
+                    Sigmoid = ek neuron ki probability.
+                    Softmax = poore output layer ki probabilities.
+            */
+
+            Isi wajah se cross-entropy loss Y (one-hot vector) aur Y_hat (Softmax probabilities) 
+            ko compare karta hai aur model ke weights update karta hai taaki sahi class ki 
+            probability 1 ke kareeb aur baaki classes ki probabilities 0 ke kareeb pahunch jayein.
+
+output layer aa gayi layer3
+ab layer3 me jo he isko y_hat bolege
+ab error nikalege y-y_hat and isko jo value aayegi isko lowercase_delta bolege
+lowercase_delta=y-y_hat
+
+ab output layer jo ki layer3 he usme error aayi vo lowercase_delta me he.
+ab ye error kis se aayi?
+    answer :
+    model3 ko layer2 se multiply krne se.
+    Output layer (Layer 3) me error aayi, jo lowercase_delta³ (δ³) hai.
+    Ye error Model3 × Layer2 se output banne ki wajah se aayi.
+    To update Model3 hoga ya Layer2 bhi?
+    Short Answer
+    ✅ Model3 update hoga.
+    ❌ Layer2 update nahi hota.  // ye to forward me update hota he, sigmoid(z) se 
+    Layer2 koi parameter nahi hai.
+        Ye sirf temporary value (activation) hai.
+    example:
+        Weight = 2  // model 
+        Input = 5  // layer
+
+        function = 5*2=10 aaya but expected 7.5 tha.
+        to kisko bdloge weight ya input
+        answer weight bdlege.
+
+to ab humare paas lowercase_delta me error he output layer k har neuron ki 
+
+Reason 1: why transpose input matrix to calculate gradient of W from lowercase_delta and input.
+so ab hum dekhte he ki model ya phir weight kese update krna he:
+    iske phle ye read karo : 'how dL/dw calculated? Loss in neural network.'
+    is se ye pta chla jayega ki dL/dw ko matrix form me kese kre.
+    to dL/dw= lowercase_delta*x aata he sb calculation krne k baad 
+    ab humare paas 
+        lowercase_delta he in form of n*1 matrix.
+        x he in form of m*1
+    is se model nikalna he: vo model jiska multiply x se krne se lowercase_delta bna and 
+        model*x=lowercase_delta;  // where lowercase_delta= y-y.
+        model*(m*1)=(n*1)
+
+        but we have to find model:
+        model= (n*1)/(m*1) = lowercase_delta/x  // means x ka transpose krna pdega.
+        model= lowercase_delta * x^T 
+             = nx1 * 1xm = nxm bnega.
+    
+    to ek to ye reason he ki transpose kyu kiya.
+Reason 2: why transpose input matrix to calculate gradient of W from lowercase_delta and input.
+    ek or reason dekhte he:
+      W1= model1 * layer0 = z1 => view=sigmoid(z)=> layer1= view+bias  
+      W2= model2 * layer1 = z2 => view=sigmoid(z)=> layer2= view+bias
+      W4= model3 * layer2 = z3 => layer3 =sigmoid(z)  y^hat.
+    
+    layer0= 400x1  // 400 neuron    model1= 100*400  W1
+    layer1= 100*1  // 100 neuron    model2= 300*100  W2
+    layer2= 200*1  // 200 neuron    model3= 10*200  W3
+    layer3= 10*1;  // 10 ourput ,   
+                   //target class.
+
+    ye to humare example k hisab se dekha:
+        vector<uint32_t> layer_wise_neurons_count={csv.columns(),100,200,10};
+    but k dummuy example dekhte he ki kyu transpose kiya.
+        input x= [2
+                  3​]
+             W=[w11​ w12
+                w21 ​w22​​]
+        z=wx
+        z1​=w11​(2)+w12​(3)
+        z2​=w21​(2)+w22​(3)
+    ab maan lo ki lowercase_delta (y-y^) aaya: [5
+                                         7]
+        Matlab
+            Output neuron 1 ka error = 5
+            Output neuron 2 ka error = 7
+        Ab har weight ka gradient nikalo: wnew=wold-gradient
+        first neuron:
+            ​∂L/∂w11​=5×2=10
+            ​∂L/∂w12​=5×3=15
+        dusra neuron:
+            ​∂L/∂w21​=7×2=14
+            ​∂L/∂w22​=7×3=21
+        
+        final gradient:
+           ∂L/∂W​=[10 15
+                  14​ 21​]
+
+        Ab dekho ye matrix kaise bani.:
+            lowercase_delta x input_transpose= [5       X [2 3] = ye upar wala .
+                                                 7]
+        agar transpose nahi krte to possible hi nahi .
+
+
+
+How to calculate lowercase_delta in back_propagetion: for inner neurons
+    Output layer ka delta BCE + Sigmoid me directly:y-y^ nikal jaata he.
+    Lekin hidden layers ke neurons ka delta directly nahi pata hota,
+    kyunki unke paas target value (y) nahi hoti. Isliye unka delta next layer ke delta se nikala jata hai.
+    suppose a network:
+           Input      Hidden1      Hidden2      Output
+            400   --->   100   --->   200   --->   10
+        Forward Pass:
+                Layer 1
+                    Input:
+                        X = 400 × 1
+                    Weight:
+                        W1 = 100 × 400
+                    Output:
+                        Z1 = 100 × 1
+                        A1 = 100 × 1
+                Layer 2
+                    Weight:
+                        W2 = 200 × 100
+                    Output:
+                        Z2 = 200 × 1
+                        A2 = 200 × 1
+                Output Layer
+                    Weight:
+                        W3 = 10 × 200
+                    Output:
+                        Z3 = 10 × 1
+                        A3 = ŷ = 10 × 1
+        Backward Pass
+            Step 1: Output Delta
+                    Target bhi
+                        Y = 10 × 1
+                    Prediction
+                        Ŷ = 10 × 1
+                    To
+                        δ3 = Ŷ − Y
+                        Size = 10 × 1
+                    Ye clear hai
+            Step 2: Hidden2 (200 neurons):
+                    Ab confusion yahi hota hai.
+                    Tumhare 200 neurons me se ek neuron maan lo:
+                    H157- har output me iska contribution he.
+                    Ye sirf ek output se connected nahi hai.
+                    Ye 10 output neurons se connected hai.
+                              O1
+                            /
+                    H157 --- O2
+                            /
+                        O3
+                        ...
+                        \
+                            O10
+                    Output me 10 errors aaye.
+                    H157 bolega:
+                        "In 10 errors me mera contribution kitna tha?"
+                        e1,e1,e3..........e10
+                    Wo kya karega?
+                        200*1 tha usne model  10*200  k sath milke 10*1 ka output bnaya tha.
+                         200 neuron ka 200 model weight k sath multiplies hokr ek scalr value bni ouptput 1,
+                          similarly o2,o3,.......o10.
+                    to abhi humko us model and ye output jo he 10 ka iska use kr k lowercase_delta nikalna he.
+                    to layer2 ka lowercase_delta:
+                        tmp = transpose(model3) * lowercase_delta3;
+                        lowercase_delta2 = tmp ⊙ sigmoid_dash(z2); // yaha 
+                            //sigmoid_dash(z2) se element-wise multiply bhi karna padta hai.
+                    sigmoid dash kyu?:
+                            z  ---->  sigmoid  ---->  a  ---->  Loss
+                                        σ(z)  
+                        Forward Pass: sigmoid(z) ✅
+                        Backward Pass: sigmoid_dash(z) ✅  // % constribution of that neuron in the ouptput error.
+    isiliye: sir ne code me likhwaya he:
+                for(--iii;iii>=0;--iii)
+                {
+                *(tmps[iii]) = *(model_tvs[iii]) * (*(lower_case_deltas[iii+1]));
+                *(g_dash[iii]) = der_sigmoid(*(z[iii]));
+                *(lower_case_deltas[iii])=pointwise_product(*(tmp_views[iii]),*(g_dash[iii]));
+                }
+        yaha se lower_case_deltas mil ayege phir models k gradient nikal k unko change krege.
+
+ek or he uppercase delta iski kya need?:
+     to ye jo uppercase deltas he ye vahi weight ko update krne wali baat he back_propagetion me.
+     yaha se lower_case_deltas mil ayege phir models k gradient nikalege.
+     inhi gradient ko uppercase deltas bola he.
+     and inhi uppercase_Deltas ka use kr k weight update hoge.
+
+
+        
+****************************************
+
+
+Now relate the theory with program:
+    1. input me 5000 images k 400 pixels , 401 me target class 
+        har image ki 400 pixel k aage uski actual image class ki value in 401th column.
+       x bnaya 5000x401
+       y bnaya 5000x10 ka 
+             y ko fill kiya:
+                            for(idx=0;idx<csv.rows();++idx)
+                            y[idx][target_class[idx]-1]=1.0;
+                y ki har row me 0 0 0 0 1 0 0 0 0 
+                ek jagah 1 baki 0 
+                isko one hot encoding bolte he.
+            target_class bhi 5000x1 ka he. har cell me 
+            5000 image ki target class mapped he.
+        y_hat bnaya 5000x10 ka
+        har image ka predicted iski har row me aayega
+        lowercase_delta= y-y_hat
+
+    2. layers bnaye:
+            har layer me neueon ki sankhya
+            {csv.columns(),100,200,10}
+    3. layers ka transpose:
+            for back propagation me model ka gradient find krne k liye.
+            usme output layer nahi aayegi , kyuki output layers se koi aage ki layer nahi bni.
+            layer_wise_neurons_count.size()-1 
+            for(idx=0;idx<layer_wise_neurons_count.size()-1;++idx)
+            layersTransposed[idx]=new NDArrayTransposedView(layers[idx],true)
