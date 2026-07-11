@@ -67,6 +67,12 @@ or saare lectures dekhna he one by one
 27 june , uploaded video and cppjetml
             all done , now we have to run it , resolve and note the exceptions.
 
+30 june, 2july  uploaded 
+4 july cancelled 
+7 july
+9 july  to be shared with sili 
+11 july lectures hue. zip updated and issues are resolved 
+
 
 **************************************** 
 26 feb se 11 april tk total 11 lecture dekhne he and practical krna he
