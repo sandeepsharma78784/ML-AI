@@ -1,0 +1,316 @@
+7 july se debugging starts
+
+7 july:
+	something to update model wale comment k niche model update krne wala 
+    part discuss kiya.
+7 july ka suggested change:
+	    for(idx=0;idx<upper_case_deltas.size();++idx)
+        {
+        (*(upper_case_deltas[idx]))/=x_rows;
+        *(tmp_models[idx])=*(models[idx]);
+        (*(tmp_model_views[idx]))*=(regularization_parameter/x_rows);
+        model_dimension=tmp_models[idx]->get_dimensions();
+        NDArray::fill(*(tmp_models[idx]),{0,0},{model_dimension[0]-1,0},0.0);
+        (*(upper_case_deltas[idx]))+=(*(tmp_models[idx]));
+        (*(upper_case_deltas[idx]))*=learning_rate;
+        (*(models[idx]))-=(*upper_case_deltas[idx]);
+        }
+        uppercasedelta ka view nikal k us view ko update krna na ki uppercase delta ko.
+        but ye kaam kr chuke he fill() wali line pr tmp_model k phle column me 0.0 rkh diya ab 
+        tmp model ko aupercase delta me add kr diya 
+        and uppercase delte k har element ko learning rate se multily kr diya 
+        and finally original model ko update kr diya with model=model-uppercasedelta.
+    final: means jo change suggest kiya tha vo nahi krna he, upper_case_delta ka view nahi nikalna.
+            and na hi tmpmodle ka view coz , tmpmodel k firstcolumn me 0.0 daal diya.
+            ab isko upper_case_delta k first column me add krege to koi fark nahi pdega.
+    final: 
+        ye kaaam 14 july wale lecture me kiya he.
+
+
+9 july: corrections:  A point me correction and B,C,D me discussion.
+    A. // update y_hat with info on output_layer
+        // luckily ye chl raha tha.
+        NDArray::copy(y_hat,{x_row_index,0},*(layers[ii-1]),{0},{1});
+       // is line ko change kr k esa kiya
+       // update y_hat with info on output_layer
+        NDArray::copy(y_hat,{x_row_index,0},*(layers[ii]),{0},{1});
+    B. suppose 4 layers he 
+        l0 l1   l2   l3 and ek target class, // l0 input, l3 output.
+        m0 m1   m2                         // l3 k aage model nahi lgega.
+            ld0 ld1  ld2                  // l3-y ase ld2 bnega, ld means lower_case_delta
+                                        // 
+            output layer aa gayi layer3, and ek he expected y.
+            ab layer3 me jo he isko y_hat bolege
+            ab error nikalege y-y_hat and isko jo value aayegi isko lowercase_delta bolege
+            lowercase_delta=y-y_hat
+            ld2= y-y_hat  // isi ko error and isi ko ouptput layer ka lower_case_delta bhi bolte he.
+        ab ld1 kese nikale?
+            to iska simple jawab he l3 kese bna ?
+            answer: l3=m2*l2 se.
+                    Matlab l3 directly l2 aur m2 par depend karta hai.
+                    Ab hume pata chal gaya ki l3 me kitni error hai (ld2).
+            Question ye hai:
+                    Agar l3 me error aa gayi hai, to us error ke liye l2 kitna responsible hai?
+                    Kyunki l3, l2 se hi bana tha, isliye hume error ko peeche (backward) l2 
+                    tak bhejna padega.
+                    Ye kaam m2 ke transpose se hota hai.
+                ld1 = ld2 × transpose(m2)
+            Iska matlab:
+                ld2 batata hai output layer me error kitni hai.
+                transpose(m2) batata hai ki output layer ka har neuron hidden layer ke kis neuron 
+                    se kitna influence hua tha.
+                In dono ko multiply karke hume pata chal jata hai ki l2 ke har neuron ne output 
+                    error me kitna contribution diya.
+                Agar activation function (jaise sigmoid) use ho rahi hai, to uska derivative bhi 
+                    include karna padta hai:
+                ld1 = (ld2 × transpose(m2)) ⊙ activationDerivative(l2)
+                    Yahan ⊙ ka matlab element-wise multiplication hai.  
+
+            Isi process ko Backpropagation kehte hain—error ko output layer se hidden layers 
+            tak reverse direction me bhejna.
+        similarly:
+            ld0 = ld1 × transpose(m1)
+    C. B me humne dekha ki kese lower_case_delta nikale
+        but humne dekha ki m0 ka use nahi hua lower_case_delta nikalne me 
+        Dhyan do:
+            ld2 nikalne me koi weight use nahi hua.
+            ld1 nikalne me m2 use hua.
+            ld0 nikalne me m1 use hua.
+            m0 kahin bhi delta nikalne me use nahi hua. ✅
+        Phir m0 ka use kisliye hota hai?
+            Sirf apna gradient nikalne aur update hone ke liye:
+                grad_m0 = l0ᵀ × ld0
+                m0 = m0 + learning_rate × grad_m0
+    D. ab in lower_case_delta ka use krke upper_case_delta niklega.
+        dekho humare paas kya he:
+            l0 l1   l2  l3 and ek target class, // l0 input, l3 output.
+            m0 m1   m2                         // l3 k aage model nahi lgega.
+               ld0 ld1  ld2 
+        ab upper_case_delta nikalna mtlb m0 m1 and m2 ka equivalent nikalna.
+            lower_case_delta means : lowercase delta (ld) = neuron ki error (error signal)
+                ld2: l3 me kitna add kre ki ouptput expected aa jaye.
+                ld1: l2 me kitni galti he.
+                ld0: l1 me kitni galti he.
+                note: l0 me to galti he hi nahi kyuki vo to data he.
+                    galti to l1,l2,l3 me hui kyuki ye teeno hi computed he.
+        ab agar layers ka transpose and lower_case_delta ka multiply kre to equivalent model aa jayega.
+        and iski ko upper_case_delta bolte he.
+        ye har example k liye har layer pr hoga.
+        har example k liye ye main upper_case_delta me accumulate hota jayega.
+        phli cycle khtm hone pr :
+                gradient= upper_case_delta/x_rows 
+                phir isme phla column chood k sbhi ko regularization parameter se multiply.
+                phir actual model me upper_case_delta ko add kr dege.
+                upper_case_delta= tmpmodel+ upper_case_delta // where upper_case_delta k firs column me 0.0
+                phir :
+                   upper_case_delta= learning_rate * upper_case_delta
+                phir 
+                    model= model- upper_case_delta
+
+11 july: phle kahi to segmentaion fault dekha he sir ne uske piche pde he.
+    debugging k chkkar me pura neural network rata gaya.
+    correction:     
+        ml_functions.h: 
+            template<typename T,
+            typename=enable_if_t<disjunction_v<is_same<T,NDArray>,is_same<T,NDArrayTransposedView>,is_same<T,NDArrayView>>>>
+            OneParamFunc<T> der_sigmoid(T &obj)
+            {
+                return OneParamFunc<T>(obj,sigmoid);
+                // isko chagne kr k esa kiya
+                return OneParamFunc<T>(obj,der_sigmoid); // is se lower_case_delta galat compute ho raha tha.
+            }
+        NDArray.cpp:
+            for(i=0;i<number_of_left_matrices;++i)
+            {
+            #pragma omp parallel for private(c,c1)
+            for(r=0;r<left_matrix_rows;++r)
+            {
+                for(c=0;c<left_matrix_columns;++c)
+                {
+                    for(c1=0;c1<right_matrix_columns;++c1)
+                    {
+            //product_matrix[r][c1]+=(left_matrix[r][c]*right_matrix[c1][c]);
+            product_matrix[r*right_matrix_columns+c1]+=(left_matrix[r*left_matrix_ndarray_columns+c]*right_matrix[c1*right_matrix_rows+c]);
+                // left_matrix[r*left_matrix_ndarray_columns+c] isko change kr ke 
+                // left_matrix[r*left_matrix_columns+c] esa likha 
+                // left_matrix_ndarray_columns ko initialize kr k chhod diya tha and actual me 
+                // left_matrix_columns ko update kr rahe the.
+                // har if else me left_matrix_ndarray_columns ko nahi left_matrix_columns ko update kiya he.
+                //left_matrix_ndarray_columns iski entry ko delete krna he.
+                    }
+                }
+            }
+            }
+        NDArray.cpp:
+            pointwise_product() ke ek or overloaded version introduce kiya.
+            and operator= me ek or condition add kri:
+                    NDArray NDArray::operator=(InfixExpression<NDArray *,NDArray *> expression)
+                    {
+                        if(expression.oper=='*') this->multiply(expression);
+                        else if(expression.oper=='/') this->divide(expression);
+                        else if(expression.oper=='+') this->add(expression);
+                        else if(expression.oper=='-') this->subtract(expression);
+                        // ye condition add kri.
+                        else if(expression.oper=='.') this->pointwise_product(expression);
+                        return *this;
+                        // phle ye compoile ho raha the kyuki '.' operator k liye confition hi nahi thi and 
+                        // default me *this return ho raha tha.
+                    }
+
+                iske liye NDArray.h me entry krni pdegi.
+        NDArray.h:
+            void pointwise_product(InfixExpression<NDArray *,NDArray *> &expression);
+            then define this in NDArray.cpp
+        NDArray.cpp:
+            void NDArray::pointwise_product(InfixExpression<NDArray *,NDArray *> &expression)
+                {
+                uint32_t index=0;
+                for(auto &e:this->collection)
+                {
+                e=expression.left->collection[index]*expression.right->collection[index];
+                ++index;
+                }
+                }
+    
+    11 july tk ka covered.
+
+
+14 july: aaj hi k lecture me segmentaion fault bhi aaya.
+    for(idx=0;idx<upper_case_deltas.size();++idx)
+    {
+    (*(upper_case_deltas[idx]))/=x_rows;
+    *(tmp_models[idx])=*(models[idx]);
+    (*(tmp_model_views[idx]))*=(regularization_parameter/x_rows);
+
+    ////// ye line add kri
+    model_dimension=tmp_models[idx]->get_dimensions();
+    NDArray::fill(*(tmp_models[idx]),{0,0},{model_dimension[0]-1,0},0.0);
+    /// ye upar ki do lines add kri.
+
+    (*(upper_case_deltas[idx]))+=(*(tmp_models[idx]));
+    (*(upper_case_deltas[idx]))*=learning_rate;
+    (*(models[idx]))-=(*upper_case_deltas[idx]);
+    }
+
+    goal: seg fault check krna and main function se functionality bahar krna.
+            delcaration ko change kr diya he .
+            saaare delcaration ko cycle se bahar kr diya.
+                NDArray minus_y({csv.rows(),10});
+                NDArray log_y_hat({csv.rows(),10});
+                NDArray one_minus_y({csv.rows(),10});
+                NDArray one_minus_y_hat({csv.rows(),10});
+                NDArray log_one_minus_y_hat({csv.rows(),10});
+                NDArray left_product({csv.rows(),10});
+                NDArray right_product({csv.rows(),10});
+                NDArray difference({csv.rows(),10});
+    note: from this lecture we found seg fault , but sir ka kehna he ki ye agar c me bana lete 
+            to seg falut nahi aata, 
+            kyuki cpp me bahut saare behind the scene chlta he.
+            developer ko nahi pta.
+        next lecture jo bhi issue he vo solve kr k aage bdna he.
+            nan expected rhta he cose me , aa skta he.
+    note: hum jo bhi debugging krege vo 14 july wale pr krege.
+          iske liye humne alag se foder bna k waha zip ko extract kiya he.
+          C:\ml practicals
+          but isme hum track nahi kr paayege ki chages kya he 
+          to iske liye humko fit wale folder me hi isko copy krna pdega 
+          like:
+            debug_ml_14_july and sir wala commit kr k then chagne krege.
+
+
+23 july: 14 k baad sidha 23 ko hua lecture.
+        aaj k lecture me sir ne kuch validations apply kiye vo discuss kiye the.
+    sir ne debug krte krnte manual debug kiya cout with line number.
+    to vo krte krte  is function  me kuch issye find kiya.
+        cannnot multiply kr k error aayi.
+        // update upper_case_deltas
+        for(idx=0;idx<upper_case_deltas.size();++idx)
+        {
+        *(tmp_upper_case_deltas[idx])= *(lower_case_deltas[idx])*(*(layersTransposed[idx+1]));
+        *(upper_case_deltas[idx])=*(upper_case_deltas[idx])+ (*(tmp_upper_case_deltas[idx]));
+        }
+    means lower_case_delta k  bharose jo upper_case_delta bna rahe he usme issue he.
+    to isko check krna he.
+    multiply lower_case_delta with layersTransposed
+    segmentaion falut wala issue abhi bhi he.
+    rishabh ka suggesion:
+         *(tmp_upper_case_deltas[idx])= *(lower_case_deltas[idx])*(*(layersTransposed[idx+1]));
+         iski jagah 
+          *(tmp_upper_case_deltas[idx])= *(lower_case_deltas[idx])*(*(layersTransposed[idx]));
+        esa hona chahiye.
+        ye vahi concept he jo humne bnaya tha:
+                    l0 l1   l2   l3 and ek target class, // l0 input, l3 output.
+                    m0 m1   m2                         // l3 k aage model nahi lgega.
+                        ld0 ld1  ld2 
+                ye wala.
+                yaha :
+                    ld2 nikalne me koi weight use nahi hua.
+                    ld1 nikalne me m2 use hua.
+                    ld0 nikalne me m1 use hua.
+                phir:
+                    grad_m0 = l0ᵀ × ld0
+                    grad_m1 = l1ᵀ × ld1
+                    grad_m2 = l2ᵀ × ld2
+                note:
+                    ye sbhi tmp_upper_case_deltas he , inka accumulate kiya he 
+                            upper_case_delta me har  training example k liye.
+    means sir ne abhi yaha tk:
+            // update upper_case_deltas
+            for(idx=0;idx<upper_case_deltas.size();++idx)
+        yaha tk debug kiya and iske lie:
+            ndarray.cpp me line 200 tk k function validate kr chuke he sir.
+
+    sath hi  unhone:
+        #define _TO_STRING(str) #str
+        #define TO_STRING(str) _TO_STRING(str)
+        #define LINE_NUMBER(str) TO_STRING(__LINE__)
+
+        ye tarika btaya line number print krne ka and macro me 
+        and cocept smjhaya ki :
+            __LINE__ ye ek macro he iski jagah source code ki line aa jayegi 
+                jis line pr iska use hua uska line number aa jayega.
+                is se ye pta chl jaye ki konsi line pr jaana he.
+            to ye TO_STRING ko diya.
+            and TO_STRING ne _TO_STRING ko diya.
+
+           #str lagane se  _TO_STRING ko jo  bhi milega bo "" me include ho jayega.
+
+        iske liye lecture dekhna he , sir me practical dikhaya .
+        to agar   _TO_STRING(__LINE__) krege to __LINE__ hi aayega but humko __LINE__ ki value chahiye 
+        to isiliye ek helper bnaya TO_STRING naam ka ye __LINE__ se value nikal lega 
+        and _TO_STRING ko vo value mile jayegi.
+
+    sir aage or bhi validations apply krege , humko bhi check krna he ki 
+    seg fault kyu aa raha he.
+
+25 july:
+    aaj bhi sir ne jb program run kiya to vahi usi function me core dumped ki error print hui.
+    and cannot multiplly wali error throw hui.
+    Aborted (core dumped)
+    sir ne dimension print kraye to 99 and 401 print hua.
+
+    A. 25 july ka jo donwload kiya he usme ye change krna baaki he  
+        *(tmp_upper_case_deltas[idx])= *(lower_case_deltas[idx])*(*(layersTransposed[idx+1]));
+        isko 
+        *(tmp_upper_case_deltas[idx])= *(lower_case_deltas[idx])*(*(layersTransposed[idx]));
+        14 july wali zip me ye change he, might be sir ne update nahi kiya hoga ya 
+        14 july k chagne k baad old wali utha li ho.
+    B. NDArray.cpp me sir ne ya validation add kiya:
+        if(left_matrix_columns!=right_matrix_rows)
+        {
+        throw invalid_argument("Cannot multiply, invalid dimensions" TO_STRING(__LINE__));  line 464
+        }
+    C. shreyas se discuss hua but vo purane code pr chla raha tha.
+    D. sir bol rahe he kahi na kahi view k calculation me gadbad he.
+    E. 
+
+
+
+
+
+
+                
+                   
+
+
+

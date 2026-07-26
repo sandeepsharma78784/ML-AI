@@ -345,3 +345,218 @@ Now relate the theory with program:
             layer_wise_neurons_count.size()-1 
             for(idx=0;idx<layer_wise_neurons_count.size()-1;++idx)
             layersTransposed[idx]=new NDArrayTransposedView(layers[idx],true)
+*******************
+Question: humne dekha ki weight me bhi bias and humne dekha ki neuron me bhi bias?
+          to  ye he kya.
+Answer:   Neuron wala bias aur model wala bias alag cheezein nahi hain, balki ek hi 
+            computation ke do perspectives hain.
+        Ek neuron ko dekho
+        Ek neuron ka equation hota hai:
+                z=w1*x1 +w2*x2 + w3*x3 + 1*b 
+        input layer x1,x2,x3, ye khadi patti he.  [column]
+        iske aage model to jitne input me row utne model me column 
+        to model bnega  w1 w2 w3 ya aadi patti      [row]
+        esi or bhi row  w11 w12 w13                 [row2]
+        idr jitni row utne udr neuron bnegee next hidden layer me.
+
+        ab suppose hiidee me 5 neuron rkhe to model me 5 row leni pdegi 
+        m= w1 w2 w3
+           w1 w2 w3
+           w1 w2 w3
+           w1 w2 w3
+           w1 w2 w3
+        and 
+        x=  x1                   // ya bole to previous layer ya input layer kuch bhi ho skta he.
+            x2
+            x3
+
+        but as we know hum csv load krne k baad 
+        ml_utils::get_x_y(csv,x,target_class);
+        // yaha humne x se last column ko y me daal a
+        // then sbko ek khiska k first colmn me x k 1.0 dala
+
+        jb training example k liye row load hogi khdi to top pr 1 rahega like this.
+                x=  1.0
+                    x1                   // ya bole to previous layer ya input layer kuch bhi ho skta he.
+                    x2
+                    x3
+            here 1 is b 
+            from  z=w1*x1 +w2*x2 + w3*x3 + 1*b 
+            to isko matrix me bnane k liye model me 1 add krna pdega.
+            m=  1.0 w1 w2 w3
+                1.0 w1 w2 w3
+                1.0 w1 w2 w3
+                1.0 w1 w2 w3
+                1.0 w1 w2 w3
+            x me jo 1.0 tha vo bias tha , idr jo 1.0 he weight me vo 
+            neron ki equation ko satisfy krne k liye he .
+            1*b ko .
+        so isiliye model ka view liye jaata he 
+        to ab model se uppercase delta bnega that is vo gradient
+        to gradient me 
+            (*(upper_case_deltas[idx]))+=(*(tmp_models[idx]));
+        is jagah issue kiya humne ,
+        upper_case_deltas me bias nahi add hona chaiye bias to vesa hi rhega.
+        upper_case_deltas kese aaya ye dekhne k lie: 'ek or he uppercase delta iski kya need?:'
+        ye dekho isi file me.
+        upper_case_deltas is ki model ki har cell ki value ko kitna chagne krna he.
+        isi ko gradient bolte he.
+        or yahi to nikalna he humara mksa
+        hum model ko hi to update kr rahe he loss bdle ke liye 
+        puri kahani hi 
+        dL/dW ki he , ki weight me kitna change kre ki loss km ho.
+        isliye bich me dz and vo terms, kl dekh k update krna he.
+
+
+        
+
+
+
+        ab model and previous_layer/input_layer ka multiply kr k next_layer/output_layer bnegi.
+        but agar next_layer != output_layer to humko bias add krna pdega. 
+
+        means humne jo upar 5 neuron ki baat kari next layer me usme ek bias to 6 neuron.
+
+
+    ***************************
+    Summary: note : upar wali story read krne k baad hi ye summary read kare.
+    input layer n*1 
+    model0 se isko multiply krke z bnayege and uska sigmoid nikalege.
+    layer1 me usko sigmoided z ko dalege and 0th index me 1 dalege.
+        ab layer 1 me neurons ready he with 1 bias k sath 
+    
+    model 1 k sath layer1 ka multiply krke z1 bnega and uska sigmoid nika k layer2 
+
+    and so on till last layer.
+
+
+kese kaam kr raha he:
+        Training Cycle 1
+        │
+        ├── Example 1
+        │     ├── Forward Propagation
+        │     ├── Backpropagation
+        │     └── Uppercase Delta me add
+        │
+        ├── Example 2
+        │     ├── Forward Propagation
+        │     ├── Backpropagation
+        │     └── Uppercase Delta me add
+        │
+        ├── Example 3
+        │     ├── Forward Propagation
+        │     ├── Backpropagation
+        │     └── Uppercase Delta me add
+        │
+        │
+        ├── ...
+        │
+        ├── Example m (last example)
+        │     ├── Forward Propagation
+        │     ├── Backpropagation
+        │     └── Uppercase Delta me add
+        │
+        ├── Average Gradient nikalo
+        ├── Cost nikalo
+        └── Weights Update
+
+training example load hua 
+model k sath multiply kr k z nikal k sigmoid nikal k next layer k neuron bnaye.
+phir usko agle model k sath multiply and so on.
+
+simple flow:
+    training example load 
+    next activation layer 
+    output layer
+    lower_case_delta nikala y-y' se 
+    lower_case_delta and activation_layer k transpose ka multiply kr k tmp upper_case_delta nikala.
+    har layer ka tmp upper_case_delta nikala.
+    isko main upper_case_delta me accumulate kiya.
+    har training example k tmp upper_case_delta ko main upper_case_delta me add krte gaye.
+
+    cycle khtm hone se phle us acccumulated upper_case_deltas[i] ko 1/total_training_example se multiply kiya 
+    and models ko update kiya.
+    or ye he vo model upate krne ka code:
+            for(idx=0;idx<upper_case_deltas.size();++idx)
+            {
+            (*(upper_case_deltas[idx]))/=x_rows;
+            *(tmp_models[idx])=*(models[idx]);
+            (*(tmp_model_views[idx]))*=(regularization_parameter/x_rows);
+
+            model_dimension=tmp_models[idx]->get_dimensions();
+            NDArray::fill(*(tmp_models[idx]),{0,0},{model_dimension[0]-1,0},0.0);
+            (*(upper_case_deltas[idx]))+=(*(tmp_models[idx]));
+            (*(upper_case_deltas[idx]))*=learning_rate;
+            (*(models[idx]))-=(*upper_case_deltas[idx]);
+            }
+
+            ++cycle;
+            } // training cycles loop ends
+
+----------------------------------
+Question : final gradient kese nikal raha he and finally model update krne ka formula kya he.
+Answer   : isko smjhne k liye phle regularize means kya and regularization_parameter kya?
+            Regularize ka matlab hota hai model[weights] ko control karna taaki wo bahut zyada complex na 
+            ho aur overfitting na kare.
+            Regularize = model ki complexity ko limit karna / weights ko control karna taaki
+            overfitting kam ho.
+            but humko pta he ki weight me first column bias hota he 
+            and activation layer me first neuron bias hota he.
+            regularization_parameter me humko model se kaam he to model k bias ko dekhte he
+            Weights → regularize hote hain ✅
+            Bias → regularize nahi hota ❌
+            isliye 
+                bias wale column ko update krne ka alag formula and weights wale column ko update krne ka
+                alag formula.
+                final_gradient= learning_rate* ((1/m)*upper_case_delta + (reg/m)*theta)   // here theta means original model ya weights.
+                to pure therta k sath regularization parameter ka multiplly nahi hoga.
+                only theta k view k sath reg param ka multiply hoga isiliye 
+            for(idx=0;idx<upper_case_deltas.size();++idx)
+            {
+            //(1/m)*upper_case_delta
+            (*(upper_case_deltas[idx]))/=x_rows;
+
+            // models ko tmp me copy kiya.
+            *(tmp_models[idx])=*(models[idx]);
+
+            // tmp model k view ko updata kiya and ye (reg/m)*theta achive kiya.
+            (*(tmp_model_views[idx]))*=(regularization_parameter/x_rows);
+
+            model_dimension=tmp_models[idx]->get_dimensions();
+            NDArray::fill(*(tmp_models[idx]),{0,0},{model_dimension[0]-1,0},0.0);
+            (*(upper_case_deltas[idx]))+=(*(tmp_models[idx]));
+            (*(upper_case_deltas[idx]))*=learning_rate;
+            (*(models[idx]))-=(*upper_case_deltas[idx]);
+            }
+
+
+
+Question: upppercase delta and weights ka kya relation
+Answer: Uppercase Delta (Δ) batata hai ki weights (models) ko kitna aur kis 
+        direction me badalna hai.
+        Forward propagation me ye weights prediction banate hain.
+        Backpropagation me hume pata chalta hai ki prediction galat tha.
+        Ab sawal hai:
+            Kaunsa weight kitna change karna chahiye?
+        Iska jawab Uppercase Delta deta hai.
+        Step 1: Lowercase delta
+                Output se error aati hai.
+                δ = neuron error
+                Ye batata hai neuron kitna galat tha.
+        Step 2: Gradient
+                Har weight ke liye gradient nikalte hain.
+                    Gradient=δ×a^T
+                menas output layer ka jo neuron he usko bnane me 
+                uske pichle activation layer and model me galti hogi 
+                to jo gati humne lower_case_delta me capture kri usko pichli activation layer k transpose 
+                se multiply kr de, to ek naya model bn k aa jayega isi model ko tmp_upper_case_deltas 
+                means ek training example se aane wali galti ko sudharne k liye change.
+                ese sbhi training example k tmp_upper_case_deltas ko upper_case_delta me accumulate krte gaye
+                finally upper_case_delta ko regula
+                code me:
+                    tmp_upper_case_deltas =   lower_case_delta * layerTranspose;
+
+
+
+
+

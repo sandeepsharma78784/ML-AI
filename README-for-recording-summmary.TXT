@@ -67,11 +67,21 @@ or saare lectures dekhna he one by one
 27 june , uploaded video and cppjetml
             all done , now we have to run it , resolve and note the exceptions.
 
+********************* refer file 'understand_debugging after 27 june'***********
+        also refer all files starts with 'understand_'
 30 june, 2july  uploaded 
 4 july cancelled 
-7 july
-9 july  to be shared with sili 
+7 july 
+9 july  debugging
 11 july lectures hue. zip updated and issues are resolved 
+14 july lecture and zip uploaded from silki 
+16, 18, 21 july lecture cancelled by sir, because debugging not completed.
+23 july lecture discussed what sir debugged how to pring line number and all.
+    lecture uploaded 
+        [is point tk humko debug krna he.]
+    27 june k baad se debugging hi chl rahi he.
+25 july lecture uploaded.
+
 
 
 **************************************** 
