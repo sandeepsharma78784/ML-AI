@@ -1,0 +1,30 @@
+humko krna he code debugging.
+uske liye GDB use krege:
+    GDB ek debugging tool hai jo C/C++ programs me bugs dhoondhne ke liye use hota hai.
+    GDB se kya kar sakte hain?
+        Program ko line by line execute karna.
+        Variables ki value dekhna.
+        Crash (Segmentation Fault) ka exact reason pata lagana.
+        Function call stack dekhna.
+        Breakpoint laga kar execution rokna.
+A. compile programm with gdb
+    humko src and test dono GDB model me compile krna pdega.
+    uske liye use hota he g++ -g -O0
+    test k lie: C:\ml practicals\ml\neural-net folder me 
+    g++ -g -O0 -I ..\include neural_network_copy.cpp -L ..\lib -lmlcpp -o neural_network.exe
+    source k liye create_libmlcpp.bat me : C:\ml practicals\ml\src folder me.
+    g++  -g -O0 -I ..\include -c *.cpp
+
+    so:
+        src pr jaa k create_libmlcpp.bat chla di 
+        neural_net pr jaa k cmp.bat chla di.
+B. run programm with GDB
+    to jis folder me humari exe he us me jaa ke 
+    humari test exe neural_net folder me he to usme jaa k gdb chlate he.
+    C:\ml practicals\ml-25 july\neural-net>gdb neural_network.exe // hit enter
+    then :
+        (gdb) run
+        
+    
+
+

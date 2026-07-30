@@ -14,3 +14,19 @@ Question: δ=y^−y kese aaya?
 Answer: hum dekhte he ki weight*training_Data=prediction    
                     and expected y hota he.
         to hum likhte he ki error = y-y_hat
+***************************
+Forward
+     ↓
+Output delta
+     ↓
+Hidden delta
+     ↓
+Gradient
+     ↓
+Accumulate
+     ↓
+Average
+     ↓
+Regularization
+     ↓
+Weight update

@@ -81,6 +81,8 @@ or saare lectures dekhna he one by one
         [is point tk humko debug krna he.]
     27 june k baad se debugging hi chl rahi he.
 25 july lecture uploaded.
+28 july lecture uploaded and some assignment 
+30 july cancelled , since no one joined and assignment was not done. next lecture 1 aug.
 
 
 
