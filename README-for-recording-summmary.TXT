@@ -83,9 +83,14 @@ or saare lectures dekhna he one by one
 25 july lecture uploaded.
 28 july lecture uploaded and some assignment 
 30 july cancelled , since no one joined and assignment was not done. next lecture 1 aug.
-01 aug uploaded,
+01 aug uploaded, isme optimization at compile time discuss kiya.
+        zip uploaded.
 04 aug uploaded , isme sir ne kuch tree bnane ka bola tha expression ko lekr. practical krna tha.
                     impp.
+        no zip only ss.
+        view ko parallelize krna he, 
+        
+06 Aug, uploaded, no file , only SS.
 
 
 

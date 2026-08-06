@@ -304,7 +304,50 @@
     D. sir bol rahe he kahi na kahi view k calculation me gadbad he.
     E. 
 
+28 july:
+    parallelism k liye flag:
+        Flags ka matlab
+            -O3 → Maximum optimization
+            -march=native → Tumhare CPU ke instructions (AVX2/AVX-512 etc.) ka use karega
+            -fopenmp → OpenMP enable karega
+            -std=c++20 → Modern C++ features
+    | Code                         | Compile Flag | Result                                      |
+    | ---------------------------- | ------------ | ------------------------------------------- |
+    | `#pragma omp parallel for` ❌ | `-fopenmp` ❌ | Parallel nahi hoga (directive ignore/error) |
+    | `#pragma omp parallel for` ✅ | `-fopenmp` ❌ | Parallel nahi hoga                          |
+    | `#pragma omp parallel for` ✅ | `-fopenmp` ✅ | **Parallel execution**                      |
 
+    ye rahegi line:
+        g++ -O3 -fopenmp main.cpp
+
+    | `-O2`                           | `-O3`                                   |
+    | ------------------------------- | --------------------------------------- |
+    | High optimization               | Maximum optimization                    |
+    | Code size relatively kam        | Code size badh sakta hai                |
+    | Stable aur commonly recommended | Aggressive optimization                 |
+    | Compile time kam                | Compile time thoda zyada                |
+    | Safe default                    | Performance ke liye extra optimizations |
+
+
+    B. second task tha ki esi testing k liye check lagana ki negetive log generate ho rha he kya.
+
+
+
+
+01 aug: 
+        compile time optimization discuss kiya.
+
+04 August:
+        expression ko solve krna using tree concept.
+        ek demo program bnaya.
+        a=b+c*(d-e)+f
+
+06 August:
+    aaj bahut hi accha idea disuss kiya tha sir ne 
+    humko pichle lecture me tree and number class bnnane ka bola tha , 
+    but new ka use nahi krna tha, to number me tree ko as property wrap kr diya.
+    means bole to autowired wala pattern, dependency injection wale pattern se kiya
+    
 
 
 
