@@ -90,7 +90,8 @@ or saare lectures dekhna he one by one
         no zip only ss.
         view ko parallelize krna he, 
         
-06 Aug, uploaded, no file , only SS.
+06 Aug, uploaded, no file , only SS., Tree bnana he using stack not heap 
+8,11,13,15 Aug cancelled sir not feeling well next will be on 18 August 
 
 
 
