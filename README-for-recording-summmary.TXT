@@ -90,8 +90,15 @@ or saare lectures dekhna he one by one
         no zip only ss.
         view ko parallelize krna he, 
         
-06 Aug, uploaded, no file , only SS., Tree bnana he using stack not heap 
-8,11,13,15 Aug cancelled sir not feeling well next will be on 18 August 
+06 Aug, uploaded, no file , only SS., Tree bnana he using stack not heap , vvimp
+    phir sir ne bola tha ki 8,11,13,15 Aug cancelled sir not feeling well next will be on 18 August 
+    but phir sir ne 2 lecture khud se record kr k upload kiye. and practical ka pdf bhi upload kiya.
+    12-august and 13 august , isme expression-tree bnane ka he 2 part me.
+
+12 Aug , uploaded part 1 to resolve expression tree and program pdf
+13 Aug , uploaded part 2 to resolve expression tree and program pdf
+        next lecture will be on 18 and jo sir ne programm bnaya he 2 part me usme bug find krna he.
+
 
 
 
