@@ -97,7 +97,18 @@ or saare lectures dekhna he one by one
 
 12 Aug , uploaded part 1 to resolve expression tree and program pdf
 13 Aug , uploaded part 2 to resolve expression tree and program pdf
-        next lecture will be on 18 and jo sir ne programm bnaya he 2 part me usme bug find krna he.
+15 Aug , uploaded part 3 to resolve expression tree and program pdf, idea hi change. tree ki jagah link list
+        
+next lecture 18 ko hona tha bu phir 1 week ki chtti and ek or batch merge kr k 24 aug se chau kari.
+
+24 Aug
+31 Aug
+02 sep
+04 sep   zip file ml-2 se start. 
+07 sep part 1 and part 2 , yaha tk store bna liya he and numner class implement kri this koi se lecture me 
+        uske basis pr ndarray ka expression resolver banana he.
+
+aaj tk ka practical video pdf zip sb upload next lecture will be on 9 sep 2026
 
 
 
