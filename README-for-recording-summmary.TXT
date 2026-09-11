@@ -104,12 +104,14 @@ next lecture 18 ko hona tha bu phir 1 week ki chtti and ek or batch merge kr k 2
 24 Aug
 31 Aug
 02 sep
-04 sep   zip file ml-2 se start. 
+04 sep   zip file ml-2 se start. https://thinkingmachines.in/downloads/ml-2.zip 
 07 sep part 1 and part 2 , yaha tk store bna liya he and numner class implement kri this koi se lecture me 
         uske basis pr ndarray ka expression resolver banana he.
-
+        06,12,13,15 ko jo number claas k program sir ne upload kiye the vo bnana tha 09 sep wale lecture k liye.
 aaj tk ka practical video pdf zip sb upload next lecture will be on 9 sep 2026
-
+09 sep uploaded and screen shot no zip uploaded.
+11 sep uploaded and practical url : https://thinkingmachines.in/downloads/ml-3.zip
+    next lecture will be on 16 sept.
 
 
 
