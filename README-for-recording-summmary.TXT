@@ -112,6 +112,10 @@ aaj tk ka practical video pdf zip sb upload next lecture will be on 9 sep 2026
 09 sep uploaded and screen shot no zip uploaded.
 11 sep uploaded and practical url : https://thinkingmachines.in/downloads/ml-3.zip
     next lecture will be on 16 sept.
+16 sep uploaded and practical url : https://thinkingmachines.in/downloads/ml-3.zip
+    next lecture will be on 18 sept.
+    
+
 
 
 
