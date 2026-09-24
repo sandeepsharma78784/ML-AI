@@ -347,6 +347,49 @@
     humko pichle lecture me tree and number class bnnane ka bola tha , 
     but new ka use nahi krna tha, to number me tree ko as property wrap kr diya.
     means bole to autowired wala pattern, dependency injection wale pattern se kiya
+
+
+
+
+
+to be prepare from 08 aug till 21 sep
+
+
+23 September:
+    Abhi tk humne NDArray design kiya
+    NDArrayView, NDArrayTransposedView ki programming kri.
+    then Expression class banayi, 
+    then NDArrayStore bnaya.
+    then Expression pool bnaya.
+    agar in sb ki programming smjh aa jati he to aage kya hoga dekhte he.
+
+    Expression ka result bnega to NDArray hi bnega, view ya transponsed view nahi.
+    ya phir Double rahega result.
+    so result will either be an NDArray or a Double value.
+
+    Also we have created Expression_Enum 2 ki power n me 2,4,8,16.....
+    to check whethe 
+    left is Expression, or NDArray or double 
+    right is Expression, or NDArray or double 
+
+    why rishab and shreyas and makrand are so active , because they not feeel lazy.
+    they always do more and more practice,
+
+    sir asked kisi ne mcp server bnaya kya? to mn me swala uthta he ki how to create mcp server
+    why we need it , ek poc.
+    abhi ndarrya k saare functions ko template me convert krna he.
+    functional programming kya hoti he cpp me.
+
+    aaj k jamane me data yaad rkhna and data process krna hi sbse badi baad he,
+    data ko organize kr k info nikalna.
+    e.g. bahut saare photo he to usme se prompt ya query dekr unko summary nikalna.
+
+
+    aaj k lecture me number class wale concept ko use kiya , vo linkedlist wale concept ko hata diya.
+    also expresssion pool le rahe he as array to linkedlist and tree wale ds ki bhi need nahi rahi.
+    kyuki expression continuour me rahega hi.
+
+
     
 
 

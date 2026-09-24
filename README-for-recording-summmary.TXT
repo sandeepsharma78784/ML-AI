@@ -115,7 +115,17 @@ aaj tk ka practical video pdf zip sb upload next lecture will be on 9 sep 2026
 16 sep uploaded and practical url : https://thinkingmachines.in/downloads/ml-3.zip
     next lecture will be on 18 sept.
     
+18 sept  uploaded and lecture and zip.
+    sir told to check and verify the code and read about the Number code.
 
+21 sep, very imp lecture isme c++ optimization and json k performance issue ko lekr baat hui he 
+        or kuch pichla read krna he esa discuss hua he 
+        vvvimp lecture.
+
+23 sep, very imp lecture isme finalize kiya ki 
+        konsa ds use krege expression ko solve krne k liye.
+        linkedlist or tree or expression pool wala.
+        uploaded zip and lecture till date.
 
 
 
